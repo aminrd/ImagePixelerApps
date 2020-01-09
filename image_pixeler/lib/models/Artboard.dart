@@ -7,6 +7,7 @@ import 'Pixel.dart';
 class Artboard{
 
   Image target;
+  // Size: (1500 x 1500) for (2m x 2m) banner
 
   Image get_target(){
     Image tg = this.target;

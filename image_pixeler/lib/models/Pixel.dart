@@ -56,6 +56,7 @@ class Pixel{
   }
 
   int compare_score(Pixel other){
+    // TODO: Pyramid compare, create different levels of sizes, more weight on smaller sizes
     Image img1 = this.get_core();
     Image img2 = other.get_core();
 
