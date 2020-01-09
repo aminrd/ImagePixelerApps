@@ -8,6 +8,5 @@ class Home extends StatelessWidget{
       alignment: Alignment.center,
     );// Container
 
-
   }
 }
