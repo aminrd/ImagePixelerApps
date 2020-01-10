@@ -15,23 +15,29 @@ class Pixel{
   // Core is a 16x16x3 thumbnail that is used for comparing Pixels
   String _core;
 
-
+  // Defining class constructors
   Pixel(this._id, this._width, this._height, this._base64Image, this._core);
 
+  Pixel.fromImage(Image img){
+    this._id = 0;
+    this.import(img);
+  };
+
+
   // DB-related functions
-  int get_id(){
+  int getId(){
     return _id;
   }
-  int get_height_raw(){
+  int getHeightRaw(){
     return _height;
   }
-  int get_width_raw(){
+  int getWidthRaw(){
     return _width;
   }
-  String get_core_raw(){
+  String getCoreRaw(){
     return _core;
   }
-  String get_base_raw(){
+  String getBaseRaw(){
     return _base64Image;
   }
 

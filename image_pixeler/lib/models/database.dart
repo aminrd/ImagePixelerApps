@@ -36,19 +36,19 @@ class DBHelper {
       return await txn.rawInsert(
           'INSERT INTO Pixels(width, height, baseImage, coreImage ) VALUES(' +
               ''' +
-              pixel.get_width_raw() +
+              pixel.getWidthRaw() +
               ''' +
               ',' +
               ''' +
-              pixel.get_height_raw() +
+              pixel.getHeightRaw() +
               ''' +
               ',' +
               ''' +
-              pixel.get_base_raw() +
+              pixel.getBaseRaw() +
               ''' +
               ',' +
               ''' +
-              pixel.get_core_raw() +
+              pixel.getCoreRaw() +
               ''' +
               ')');
     });
@@ -67,7 +67,7 @@ class DBHelper {
 
   Future<int> deletePixel(Pixel pixel) async {
     var dbClient = await db;
-    int id = pixel.get_id();
+    int id = pixel.getId();
     await dbClient.delete("Pixels", where: "id = ?", whereArgs: [id]);
   }
 
