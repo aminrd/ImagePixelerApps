@@ -14,6 +14,24 @@ class Pixel{
   // Core is a 16x16x3 thumbnail that is used for comparing Pixels
   String _core;
 
+
+  Pixel(this._width, this._height, this._base64Image, this._core);
+
+  // DB-related functions
+  int get_height_raw(){
+    return _height;
+  }
+  int get_width_raw(){
+    return _width;
+  }
+  String get_core_raw(){
+    return _core;
+  }
+  String get_base_raw(){
+    return _base64Image;
+  }
+
+
   void import(Image image){
     int w_size = max(image.height, image.width);
 
