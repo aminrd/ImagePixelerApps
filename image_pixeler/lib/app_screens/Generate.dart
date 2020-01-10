@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+class Generate extends StatefulWidget {
+  Generate({Key key}) : super(key: key);
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _GenerateState createState() => new _GenerateState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _GenerateState extends State<Generate> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -47,7 +47,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 fit:BoxFit.fill,
               ),
 
-              new FlatButton(key:null, onPressed:buttonPressed,
+              new RaisedButton(key:null,
+                onPressed: (){
+                  Navigator.of(BuildContext context).pop()
+                },
                   child:
                   new Text(
                     "Back to Home",

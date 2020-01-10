@@ -65,6 +65,13 @@ class DBHelper {
     return pixels;
   }
 
+  Future<int> updatePixel(int id, Pixel update) async{
+    var dbClient = await db;
+    var result = await dbClient.delete("Pixels", where: "id = ?", whereArgs: [id]);
+    this.savePixel(update);
+    return result;
+  }
+
   Future<int> deletePixel(Pixel pixel) async {
     var dbClient = await db;
     int id = pixel.getId();

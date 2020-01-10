@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+class Gallery extends StatefulWidget {
+  Gallery({Key key}) : super(key: key);
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _GalleryState createState() => new _GalleryState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _GalleryState extends State<Gallery> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(

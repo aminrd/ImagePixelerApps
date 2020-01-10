@@ -11,8 +11,8 @@ void main() {
 class MyApp extends StatelessWidget {
 
   @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
+  Widget build(BuildContext context){
+    return MaterialApp(
       title: 'Generated App',
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(
@@ -23,6 +23,11 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Merriweather',
       ),
       home: Homepage(),
+      routes: { // Defining routs
+        "/": (BuildContext context) => Homepage(),
+        "/gallery": (BuildContext context) => Gallery(),
+        "/generate": (BuildContext context) => Generate(),
+      },
     );
   }
 }
