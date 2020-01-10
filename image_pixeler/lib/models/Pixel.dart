@@ -21,7 +21,7 @@ class Pixel{
   Pixel.fromImage(Image img){
     this._id = 0;
     this.import(img);
-  };
+  }
 
 
   // DB-related functions

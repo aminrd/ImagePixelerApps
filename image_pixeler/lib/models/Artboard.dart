@@ -9,9 +9,19 @@ class Artboard{
   Image board;
   // Size: (1500 x 1500) for (2m x 2m) banner
 
-  Image getTarget() {
+  // Constructor
+  Artboard(Image targ){
+    this.target = targ;
+    this.board = this.getTarget();
+  }
+
+  Image getTarget({int w: 2048, int h: 2048}) {
     Image tg = this.target;
-    return copyResize(tg, width: 2048, height: 2048);
+    return copyResize(tg, width: w, height: h);
+  }
+
+  Image getArtBoard(){
+    return this.board;
   }
 
   void fillBoard(Image frame, int x, int y){
@@ -25,7 +35,6 @@ class Artboard{
   }
 
   Image build(List<Pixel> pList){
-    this.board = this.getTarget();
 
     /*
     int step = 128;
@@ -52,7 +61,6 @@ class Artboard{
 
     // Set some pixels to red for now
 
-    // TODO: Implement the image-pixeler algorithm
     for(var i=board.width - 10; i<board.width + 10; i++){
       for(var j=board.height - 10; j<board.height + 10; j++){
         board.setPixelRgba(i, j, 255, 0, 0);
