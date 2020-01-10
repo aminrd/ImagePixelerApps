@@ -68,7 +68,7 @@ class DBHelper {
   Future<int> deletePixel(Pixel pixel) async {
     var dbClient = await db;
     int id = pixel.get_id();
-    await dbClient.delete("Pixels", where: "id = ?", whereArgs: [id];)
+    await dbClient.delete("Pixels", where: "id = ?", whereArgs: [id]);
   }
 
   Future deleteAllPixels() async {
