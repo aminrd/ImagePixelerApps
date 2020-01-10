@@ -59,10 +59,21 @@ class DBHelper {
     List<Map> list = await dbClient.rawQuery('SELECT * FROM Pixels');
     List<Pixel> pixels = new List();
     for (int i = 0; i < list.length; i++) {
-      pixels.add(new Pixel(list[i]["width"], list[i]["height"], list[i]["baseImage"], list[i]["coreImage"]));
+      pixels.add(new Pixel(list[i]["id"], list[i]["width"], list[i]["height"], list[i]["baseImage"], list[i]["coreImage"]));
     }
     print(pixels.length);
     return pixels;
   }
 
+  Future<int> deletePixel(Pixel pixel) async {
+    var dbClient = await db;
+    int id = pixel.get_id();
+    await dbClient.delete("Pixels", where: "id = ?", whereArgs: [id];)
+  }
+
+  Future deleteAllPixels() async {
+    var dbClient = await db;
+    var result = await dbClient.delete("Pixels");
+    return result;
+  }
 }

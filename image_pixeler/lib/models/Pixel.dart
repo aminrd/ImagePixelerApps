@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:image/image.dart';
 
 class Pixel{
+  int _id;
   // Original image of size 256x256x3
   String _base64Image;
 
@@ -15,9 +16,12 @@ class Pixel{
   String _core;
 
 
-  Pixel(this._width, this._height, this._base64Image, this._core);
+  Pixel(this._id, this._width, this._height, this._base64Image, this._core);
 
   // DB-related functions
+  int get_id(){
+    return _id;
+  }
   int get_height_raw(){
     return _height;
   }
