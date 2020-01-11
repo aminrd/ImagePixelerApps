@@ -49,7 +49,7 @@ class _GenerateState extends State<Generate> {
 
               new RaisedButton(key:null,
                 onPressed: (){
-                  Navigator.of(BuildContext context).pop()
+                  Navigator.of(context).pop();
                 },
                   child:
                   new Text(

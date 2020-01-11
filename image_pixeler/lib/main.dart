@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         canvasColor: const Color(0xFFfafafa),
         fontFamily: 'Merriweather',
       ),
-      home: Homepage(),
+      //home: Homepage(),
       routes: { // Defining routs
         "/": (BuildContext context) => Homepage(),
         "/gallery": (BuildContext context) => Gallery(),

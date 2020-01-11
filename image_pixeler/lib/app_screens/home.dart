@@ -66,7 +66,10 @@ class _HomepageState extends State<Homepage> {
                     fit:BoxFit.fill,
                   ),
 
-                  new FlatButton(key:null, onPressed:buttonPressed,
+                  new FlatButton(key:null,
+                      onPressed:(){
+                        Navigator.pushNamed(context, "/gallery");
+                      },
                       child:
                       new Text(
                         "Edit",
@@ -80,7 +83,10 @@ class _HomepageState extends State<Homepage> {
 
             ),
 
-            new FlatButton(key:null, onPressed:buttonPressed,
+            new FlatButton(key:null,
+                onPressed:(){
+                  Navigator.pushNamed(context, "/generate");
+                },
                 child:
                 new Text(
                   "Generate",

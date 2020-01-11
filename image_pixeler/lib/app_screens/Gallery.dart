@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_pixeler/models/database.dart';
+import 'package:image_pixeler/models/Pixel.dart';
 
 class Gallery extends StatefulWidget {
   Gallery({Key key}) : super(key: key);
@@ -70,22 +72,7 @@ class _GalleryState extends State<Gallery> {
 
               ),
 
-              new ListView(
-                  new Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        new Image.network(
-                          'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
-                          fit:BoxFit.fill,
-                        ),
-
-                        new Radio(key:null, groupValue: null, value: .5, onChanged: radioChanged)
-                      ]
-
-                  )
-              )
+              ListView( children: getGalleryRows())
             ]
 
         ),
@@ -100,4 +87,49 @@ class _GalleryState extends State<Gallery> {
 
   void radioChanged(double value) {}
 
+}
+
+
+
+List<Widget> getGalleryRows(){
+  List<Widget> row_list = new List<Widget>();
+  var db_helper = DBHelper();
+  Future<List<Pixel>> plist_future = db_helper.getPixels();
+  
+  plist_future.then( (plist) {
+
+    for(Pixel pixel in plist){
+     Widget px_row = new Row(
+         mainAxisAlignment: MainAxisAlignment.start,
+         mainAxisSize: MainAxisSize.max,
+         crossAxisAlignment: CrossAxisAlignment.center,
+         children: <Widget>[
+           new Image.network(
+             'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
+             fit:BoxFit.fill,
+           ),
+
+           new RaisedButton(key:null,
+               onPressed: (){
+                 var db_helper_del = DBHelper();
+                 db_helper_del.deletePixel(pixel);
+               },
+               child:
+               new Text(
+                 "Delete",
+                 style: new TextStyle(fontSize:12.0,
+                     color: const Color(0xFF000000),
+                     fontWeight: FontWeight.w200,
+                     fontFamily: "Roboto"),
+               )
+           ),
+
+         ]
+
+     );
+
+     row_list.add(px_row);
+    }
+  });
+  return row_list;
 }
