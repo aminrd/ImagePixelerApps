@@ -1,4 +1,8 @@
+import 'dart:ui';
+import 'package:image/image.dart' as IMG;
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:image_pixeler/models/database.dart';
 import 'package:image_pixeler/models/Pixel.dart';
 
@@ -36,7 +40,15 @@ class _GalleryState extends State<Gallery> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    new FlatButton(key:null, onPressed:buttonPressed,
+                    new FlatButton(key:null,
+                        onPressed:() async{
+                          var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+                          Image uiImage = new Image.file(image);
+                          IMG.Image img = new IMG.Image.fromBytes(uiImage.width.toInt(), uiImage.width.toInt(), image.readAsBytesSync());
+                          Pixel new_pixel = new Pixel.fromImage(img);
+                          var db_helper = DBHelper();
+                          db_helper.savePixel(new_pixel);
+                        },
                         child:
                         new Text(
                           "Add new pixel",

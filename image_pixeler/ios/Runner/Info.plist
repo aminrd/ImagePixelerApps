@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+     <!-- Add these permissions for ios version of Image Pixeler -->
+     <!----------------------------------------------------------->
+          <key>NSCameraUsageDescription</key>
+          <string>Used to import new images to gallery or define the artwork</string>
+          <key>NSPhotoLibraryUsageDescription</key>
+          <string>Used to import images from camera roll</string>
+      <!----------------------------------------------------------->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
