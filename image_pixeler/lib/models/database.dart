@@ -3,6 +3,7 @@ import 'dart:io'; // as io
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'Artboard.dart';
 
 // Importing this app models
 import 'package:image_pixeler/models/Pixel.dart';
@@ -27,6 +28,8 @@ class DBHelper {
     // When creating the db, create the table
     await db.execute(
         "CREATE TABLE Pixels(id INTEGER PRIMARY KEY, width INTEGER, height INTEGER, baseImage TEXT, coreImage TEXT )");
+
+    await db.execute("CREATE TABLE Artboard(board TEXT)");
     print("Created tables");
   }
 
@@ -80,7 +83,29 @@ class DBHelper {
 
   Future deleteAllPixels() async {
     var dbClient = await db;
-    var result = await dbClient.delete("Pixels");
+    var result = await dbClient.rawQuery("DELETE from Pixels");
     return result;
+  }
+
+  // Artboard related functions:
+  Future<Artboard> getArtboard() async{
+    var dbClient = await db;
+    List<Map> list = await dbClient.rawQuery('SELECT * FROM Artboard');
+
+    Artboard ab = new Artboard.fromString(list[0]["board"]);
+    return ab;
+  }
+
+  void saveArtboard(String ab_base_64) async {
+    var dbClient = await db;
+    await dbClient.rawQuery("DELETE FROM Artboard");
+    await dbClient.transaction((txn) async {
+      return await txn.rawInsert(
+          'INSERT INTO Artboard(board) VALUES(' +
+              ''' +
+              ab_base_64 +
+              ''' +
+              ')');
+    });
   }
 }

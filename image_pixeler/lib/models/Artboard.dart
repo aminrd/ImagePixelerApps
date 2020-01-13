@@ -1,30 +1,38 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:image/image.dart';
+import 'package:flutter/material.dart';
+import 'package:image/image.dart' as IMG;
 import 'Pixel.dart';
 
 
 class Artboard{
-  Image target;
-  Image board;
+  IMG.Image target;
+  IMG.Image board;
   // Size: (1500 x 1500) for (2m x 2m) banner
 
+
+  Artboard.fromString(String str){
+    final bytes = Base64Decoder().convert(str);
+    target = IMG.decodeImage(bytes);
+    this.board = this.getTarget();
+  }
+
   // Constructor
-  Artboard(Image targ){
+  Artboard(IMG.Image targ){
     this.target = targ;
     this.board = this.getTarget();
   }
 
-  Image getTarget({int w: 2048, int h: 2048}) {
-    Image tg = this.target;
-    return copyResize(tg, width: w, height: h);
+  IMG.Image getTarget({int w: 2048, int h: 2048}) {
+    IMG.Image tg = this.target;
+    return IMG.copyResize(tg, width: w, height: h);
   }
 
-  Image getArtBoard(){
+  IMG.Image getArtBoard(){
     return this.board;
   }
 
-  void fillBoard(Image frame, int x, int y){
+  void fillBoard(IMG.Image frame, int x, int y){
     // Fill frame into the board
     // The top-left point is Board[x,y]
     for(var i=0; i<frame.height; i++){
@@ -34,7 +42,7 @@ class Artboard{
     }
   }
 
-  Image build(List<Pixel> pList){
+  IMG.Image build(List<Pixel> pList){
 
     /*
     int step = 128;

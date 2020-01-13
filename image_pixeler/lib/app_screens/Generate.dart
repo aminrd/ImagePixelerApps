@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:io' as IO;
+import 'package:image_pixeler/models/database.dart' as DB;
+import 'package:image_pixeler/models/Artboard.dart';
+import 'package:image_pixeler/models/Pixel.dart';
 
 class Generate extends StatefulWidget {
   Generate({Key key}) : super(key: key);
@@ -7,12 +11,11 @@ class Generate extends StatefulWidget {
 }
 
 class _GenerateState extends State<Generate> {
+  Artboard artboard = generate_artboard();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('App Name'),
-      ),
       body:
       new Container(
         child:
@@ -29,11 +32,7 @@ class _GenerateState extends State<Generate> {
                     fontFamily: "Roboto"),
               ),
 
-              new Image.network(
-                'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
-                fit:BoxFit.fill,
-              ),
-
+              new Image.memory(artboard.getTarget().getBytes()),
               new Text(
                 "Pixel Image",
                 style: new TextStyle(fontSize:26.0,
@@ -42,10 +41,7 @@ class _GenerateState extends State<Generate> {
                     fontFamily: "Roboto"),
               ),
 
-              new Image.network(
-                'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
-                fit:BoxFit.fill,
-              ),
+              new Image.memory(artboard.getArtBoard().getBytes()),
 
               new RaisedButton(key:null,
                 onPressed: (){
@@ -84,4 +80,21 @@ class _GenerateState extends State<Generate> {
   }
   void buttonPressed(){}
 
+}
+
+
+Artboard generate_artboard(){
+  var db_helper = DB.DBHelper();
+  var future_artboard = db_helper.getArtboard();
+  var future_pixel_list = db_helper.getPixels();
+
+  future_artboard.then(
+      (artboard){
+        future_pixel_list.then( (plist){
+          artboard.build(plist);
+        }
+        );
+        return artboard;
+      }
+  );
 }

@@ -115,11 +115,7 @@ List<Widget> getGalleryRows(){
          mainAxisSize: MainAxisSize.max,
          crossAxisAlignment: CrossAxisAlignment.center,
          children: <Widget>[
-           new Image.network(
-             'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
-             fit:BoxFit.fill,
-           ),
-
+           new Image.memory(pixel.get_core().getBytes()),
            new RaisedButton(key:null,
                onPressed: (){
                  var db_helper_del = DBHelper();
