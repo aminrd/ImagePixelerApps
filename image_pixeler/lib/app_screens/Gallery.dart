@@ -16,9 +16,6 @@ class _GalleryState extends State<Gallery> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('App Name'),
-      ),
       body:
       new Container(
         child:
@@ -42,12 +39,14 @@ class _GalleryState extends State<Gallery> {
                   children: <Widget>[
                     new FlatButton(key:null,
                         onPressed:() async{
+                          // Adding new image to database:
                           var image = await ImagePicker.pickImage(source: ImageSource.gallery);
                           Image uiImage = new Image.file(image);
                           IMG.Image img = new IMG.Image.fromBytes(uiImage.width.toInt(), uiImage.width.toInt(), image.readAsBytesSync());
                           Pixel new_pixel = new Pixel.fromImage(img);
                           var db_helper = DBHelper();
                           db_helper.savePixel(new_pixel);
+                          // ------------------------------
                         },
                         child:
                         new Text(
