@@ -52,7 +52,7 @@ class _GenerateState extends State<Generate> {
                     "Back to Home",
                     style: new TextStyle(fontSize:12.0,
                         color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.w400,
                         fontFamily: "Roboto"),
                   )
               ),
@@ -64,7 +64,7 @@ class _GenerateState extends State<Generate> {
                     "Save Image",
                     style: new TextStyle(fontSize:12.0,
                         color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.w400,
                         fontFamily: "Roboto"),
                   )
               )

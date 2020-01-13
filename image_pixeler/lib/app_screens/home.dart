@@ -31,7 +31,7 @@ class _HomepageState extends State<Homepage> {
               style: new TextStyle(
                   fontSize: 22.0,
                   color: const Color(0xFF000000),
-                  fontWeight: FontWeight.w200,
+                  fontWeight: FontWeight.w400,
                   fontFamily: "Roboto"),
             ),
             new FlatButton(
@@ -56,7 +56,7 @@ class _HomepageState extends State<Homepage> {
                   style: new TextStyle(
                       fontSize: 12.0,
                       color: const Color(0xFF000000),
-                      fontWeight: FontWeight.w200,
+                      fontWeight: FontWeight.w400,
                       fontFamily: "Roboto"),
                 )),
 
@@ -68,7 +68,7 @@ class _HomepageState extends State<Homepage> {
               style: new TextStyle(
                   fontSize: 25.0,
                   color: const Color(0xFF000000),
-                  fontWeight: FontWeight.w200,
+                  fontWeight: FontWeight.w400,
                   fontFamily: "Roboto"),
             ),
             new Row(
@@ -94,32 +94,34 @@ class _HomepageState extends State<Homepage> {
                         style: new TextStyle(
                             fontSize: 12.0,
                             color: const Color(0xFF000000),
-                            fontWeight: FontWeight.w200,
+                            fontWeight: FontWeight.w400,
                             fontFamily: "Roboto"),
                       ))
                 ]),
             new FlatButton(
                 key: null,
                 onPressed: () {
-                  Navigator.pushNamed(context, "/generate", arguments: _board_image);
+                  Navigator.pushNamed(context, "/generate");
                 },
                 child: new Text(
                   "Generate",
                   style: new TextStyle(
                       fontSize: 12.0,
                       color: const Color(0xFF000000),
-                      fontWeight: FontWeight.w200,
+                      fontWeight: FontWeight.w400,
                       fontFamily: "Roboto"),
                 )),
             new FlatButton(
                 key: null,
-                onPressed: buttonPressed,
+                onPressed: (){
+                  Navigator.pushNamed(context, "/about");
+                },
                 child: new Text(
-                  "About",
+                  "About and License Agreement",
                   style: new TextStyle(
                       fontSize: 12.0,
                       color: const Color(0xFF000000),
-                      fontWeight: FontWeight.w200,
+                      fontWeight: FontWeight.w400,
                       fontFamily: "Roboto"),
                 ))
           ]),
@@ -128,3 +130,5 @@ class _HomepageState extends State<Homepage> {
 
   void buttonPressed() {}
 }
+
+

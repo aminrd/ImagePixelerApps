@@ -64,7 +64,7 @@ class _GalleryState extends State<Gallery> {
                           "Remove selected",
                           style: new TextStyle(fontSize:16.0,
                               color: const Color(0xFFce2323),
-                              fontWeight: FontWeight.w300,
+                              fontWeight: FontWeight.w400,
                               fontFamily: "Roboto"),
                         )
                     ),
@@ -75,7 +75,7 @@ class _GalleryState extends State<Gallery> {
                           "Remove all",
                           style: new TextStyle(fontSize:12.0,
                               color: const Color(0xFF000000),
-                              fontWeight: FontWeight.w200,
+                              fontWeight: FontWeight.w400,
                               fontFamily: "Roboto"),
                         )
                     )
@@ -126,7 +126,7 @@ List<Widget> getGalleryRows(){
                  "Delete",
                  style: new TextStyle(fontSize:12.0,
                      color: const Color(0xFF000000),
-                     fontWeight: FontWeight.w200,
+                     fontWeight: FontWeight.w400,
                      fontFamily: "Roboto"),
                )
            ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import './app_screens/home.dart';
 import './app_screens/Generate.dart';
 import './app_screens/Gallery.dart';
+import './app_screens/About.dart';
 
 void main() {
   runApp(new MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return MaterialApp(
-      title: 'Generated App',
+      title: 'Image Pixeler App',
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(
         primarySwatch: Colors.amber,
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         "/": (BuildContext context) => Homepage(),
         "/gallery": (BuildContext context) => Gallery(),
         "/generate": (BuildContext context) => Generate(),
+        "/about": (BuildContext context) => About(),
       },
     );
   }
