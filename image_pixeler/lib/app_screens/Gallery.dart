@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:image_pixeler/models/database.dart';
 import 'package:image_pixeler/models/Pixel.dart';
+import 'package:image_pixeler/models/Utility.dart' as UTIL;
 
 class Gallery extends StatefulWidget {
   Gallery({Key key}) : super(key: key);
@@ -52,10 +53,7 @@ class _GalleryState extends State<Gallery> {
                         child:
                         new Text(
                           "Add new pixel",
-                          style: new TextStyle(fontSize:20.0,
-                              color: const Color(0xFF000000),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Roboto"),
+                          style: UTIL.button_text_styles,
                         )
                     ),
                     new FlatButton(key:null,
@@ -67,10 +65,7 @@ class _GalleryState extends State<Gallery> {
                         child:
                         new Text(
                           "Remove all",
-                          style: new TextStyle(fontSize:12.0,
-                              color: const Color(0xFF000000),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Roboto"),
+                          style: UTIL.button_text_styles,
                         )
                     )
                   ]
@@ -82,7 +77,7 @@ class _GalleryState extends State<Gallery> {
 
         ),
 
-        padding: const EdgeInsets.all(0.0),
+        padding: const EdgeInsets.all(5.0),
         alignment: Alignment.center,
       ),
 
@@ -105,20 +100,12 @@ List<Widget> getGalleryRows(){
          mainAxisSize: MainAxisSize.max,
          crossAxisAlignment: CrossAxisAlignment.center,
          children: <Widget>[
-           new Image.memory(pixel.get_core().getBytes()),
-           new RaisedButton(key:null,
+           new Image.memory(pixel.get_core(w: 16, h:16).getBytes()),
+           new IconButton(icon: Icon(Icons.delete),
                onPressed: (){
                  var db_helper_del = DBHelper();
                  db_helper_del.deletePixel(pixel);
-               },
-               child:
-               new Text(
-                 "Delete",
-                 style: new TextStyle(fontSize:12.0,
-                     color: const Color(0xFF000000),
-                     fontWeight: FontWeight.w400,
-                     fontFamily: "Roboto"),
-               )
+               }
            ),
          ]
      );

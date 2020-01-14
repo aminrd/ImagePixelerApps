@@ -5,7 +5,7 @@ import 'package:image_pixeler/models/Artboard.dart';
 import 'package:image_pixeler/models/Pixel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart' as IMG_SAVER;
-
+import 'package:image_pixeler/models/Utility.dart' as UTIL;
 
 class Generate extends StatefulWidget {
   Generate({Key key}) : super(key: key);
@@ -53,10 +53,7 @@ class _GenerateState extends State<Generate> {
                   child:
                   new Text(
                     "Back to Home",
-                    style: new TextStyle(fontSize:12.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Roboto"),
+                    style: UTIL.button_text_styles,
                   )
               ),
 
@@ -70,17 +67,14 @@ class _GenerateState extends State<Generate> {
                   child:
                   new Text(
                     "Save Image",
-                    style: new TextStyle(fontSize:12.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Roboto"),
+                    style: UTIL.button_text_styles,
                   )
               )
             ]
 
         ),
 
-        padding: const EdgeInsets.all(0.0),
+        padding: const EdgeInsets.all(5.0),
         alignment: Alignment.center,
       ),
 
