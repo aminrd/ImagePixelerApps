@@ -3,6 +3,9 @@ import 'dart:typed_data';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:image/image.dart' as IMG;
+import 'dart:io' as IO;
+
+// TODO: add three default images to pixel list
 
 class Pixel{
   int _id;
@@ -24,6 +27,12 @@ class Pixel{
     this.import(img);
   }
 
+  Pixel.fromFile(IO.File file){
+    this._id = 0;
+    Image load_image = Image.file(file);
+    IMG.Image load_image_converted = IMG.Image.fromBytes(load_image.width.toInt(), load_image.height.toInt(), file.readAsBytesSync());
+    this.import(load_image_converted);
+  }
 
   // DB-related functions
   int getId(){
@@ -67,10 +76,14 @@ class Pixel{
     return IMG.copyResize(img, width: w_new, height: h_new);
   }
 
-  IMG.Image get_core(){
+  IMG.Image get_core({int w = -1, int h = -1}){
     final bytes =  Base64Decoder().convert(_core);
     IMG.Image img = IMG.decodeImage(bytes);
-    return img;
+    if(w < 0 || h < 0){
+      return img;
+    }else{
+      return IMG.copyResize(img, width: w, height: h);
+    }
   }
 
   int compare_pixels(int p1, int p2){

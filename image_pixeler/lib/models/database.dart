@@ -57,14 +57,28 @@ class DBHelper {
     });
   }
 
-  Future<List<Pixel>> getPixels() async{
+  Future<List<Pixel>> getPixels({int need = 1024}) async{
     var dbClient = await db;
     List<Map> list = await dbClient.rawQuery('SELECT * FROM Pixels');
     List<Pixel> pixels = new List();
-    for (int i = 0; i < list.length; i++) {
+
+    int pick_number = need;
+    if(list.length < pick_number){
+      pick_number = list.length;
+    }
+    for (int i = 0; i < pick_number; i++) {
       pixels.add(new Pixel(list[i]["id"], list[i]["width"], list[i]["height"], list[i]["baseImage"], list[i]["coreImage"]));
     }
-    print(pixels.length);
+    if(pixels.length < need){
+      if(need > 3){
+        need = 3;
+      }
+      for(int i=0; i<need; i++){
+        File file = File("assets/Pixel$i.jpg");
+        Pixel default_pix = Pixel.fromFile(file);
+        pixels.add(default_pix);
+      }
+    }
     return pixels;
   }
 

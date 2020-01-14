@@ -8,6 +8,8 @@ class About extends StatelessWidget {
   About({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    //TODO: move the back button to the top in blue
+    //TODO: make a scrollable about
     return new Scaffold(
       body:
       new Container(

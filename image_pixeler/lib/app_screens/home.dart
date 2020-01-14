@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io' as IO;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_pixeler/models/Pixel.dart';
 
 import 'package:image_pixeler/models/database.dart' as DB;
 
@@ -13,8 +14,16 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  IO.File _board_image = IO.File.fromUri("assets/Artboard.png");
-  
+  //TODO: how to define a default state in flutter
+  IO.File _board_image = IO.File("./assets/Artboard.jpg");
+  List<Pixel> header_pixels = getHeaderPixels();
+
+  @override
+  void setState(fn) {
+    _board_image = IO.File("./assets/Artboard.jpg");
+    super.setState(fn);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -26,15 +35,12 @@ class _HomepageState extends State<Homepage> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            new Text(
-              "Choose your image",
-              style: new TextStyle(
-                  fontSize: 22.0,
-                  color: const Color(0xFF000000),
-                  fontWeight: FontWeight.w400,
-                  fontFamily: "Roboto"),
-            ),
-            new FlatButton(
+            // Showing board image:
+            //TODO: Encapsule images inside fixed sized containers
+            Image.file(_board_image),
+
+            FloatingActionButton.extended(
+                icon: Icon(Icons.add),
                 key: null,
                 onPressed: () async {
                   // Adding new image to database:
@@ -51,8 +57,8 @@ class _HomepageState extends State<Homepage> {
                   });
                   // ------------------------------
                 },
-                child: new Text(
-                  "Flat Button 1",
+                label: new Text(
+                  "Choose artboard image",
                   style: new TextStyle(
                       fontSize: 12.0,
                       color: const Color(0xFF000000),
@@ -60,11 +66,8 @@ class _HomepageState extends State<Homepage> {
                       fontFamily: "Roboto"),
                 )),
 
-            // Showing board image:
-            Image.file(_board_image),
-
             new Text(
-              "Prepare your gallery",
+              "Edit your gallery",
               style: new TextStyle(
                   fontSize: 25.0,
                   color: const Color(0xFF000000),
@@ -76,14 +79,9 @@ class _HomepageState extends State<Homepage> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Image.network(
-                    'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
-                    fit: BoxFit.fill,
-                  ),
-                  new Image.network(
-                    'https://github.com/flutter/website/blob/master/_includes/code/layout/lakes/images/lake.jpg?raw=true',
-                    fit: BoxFit.fill,
-                  ),
+                  //TODO: Get top two list
+                  Image.memory(header_pixels[0].get_core().getBytes()),
+                  Image.memory(header_pixels[1].get_core().getBytes()),
                   new FlatButton(
                       key: null,
                       onPressed: () {
@@ -131,3 +129,12 @@ class _HomepageState extends State<Homepage> {
 }
 
 
+List<Pixel> getHeaderPixels(){
+  var db_helper = DB.DBHelper();
+  var pixel_list =  db_helper.getPixels(need: 2);
+  pixel_list.then(
+      (plist){
+        return plist;
+      }
+  );
+}
