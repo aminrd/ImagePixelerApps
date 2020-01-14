@@ -3,6 +3,9 @@ import 'dart:io' as IO;
 import 'package:image_pixeler/models/database.dart' as DB;
 import 'package:image_pixeler/models/Artboard.dart';
 import 'package:image_pixeler/models/Pixel.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart' as IMG_SAVER;
+
 
 class Generate extends StatefulWidget {
   Generate({Key key}) : super(key: key);
@@ -57,7 +60,12 @@ class _GenerateState extends State<Generate> {
                   )
               ),
 
-              new RaisedButton(key:null, onPressed:buttonPressed,
+              new RaisedButton(key:null,
+                  onPressed:() async{
+                    // Saving the generated artboard to device gallery
+                    final result = await IMG_SAVER.ImageGallerySaver.saveImage(artboard.getArtBoard().getBytes());
+                    print("Saving the generated image");
+                  },
                   color: const Color(0xFFe0e0e0),
                   child:
                   new Text(
@@ -78,7 +86,6 @@ class _GenerateState extends State<Generate> {
 
     );
   }
-  void buttonPressed(){}
 
 }
 

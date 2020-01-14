@@ -8,6 +8,8 @@
           <string>Used to import new images to gallery or define the artwork</string>
           <key>NSPhotoLibraryUsageDescription</key>
           <string>Used to import images from camera roll</string>
+          <key>NSPhotoLibraryAddUsageDescription</key>
+          <string>Saving generated images to camera roll</string>
       <!----------------------------------------------------------->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
