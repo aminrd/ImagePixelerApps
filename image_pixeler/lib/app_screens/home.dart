@@ -13,7 +13,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  IO.File _board_image;
+  IO.File _board_image = IO.File.fromUri("assets/Artboard.png");
   
   @override
   Widget build(BuildContext context) {
@@ -128,7 +128,6 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  void buttonPressed() {}
 }
 
 

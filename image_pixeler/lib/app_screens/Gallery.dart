@@ -26,6 +26,7 @@ class _GalleryState extends State<Gallery> {
             children: <Widget>[
               new Text(
                 "Your Pixel Gallery",
+                textAlign: TextAlign.center,
                 style: new TextStyle(fontSize:20.0,
                     color: const Color(0xFF000000),
                     fontWeight: FontWeight.w400,
@@ -57,19 +58,12 @@ class _GalleryState extends State<Gallery> {
                               fontFamily: "Roboto"),
                         )
                     ),
-
-                    new FlatButton(key:null, onPressed:buttonPressed,
-                        child:
-                        new Text(
-                          "Remove selected",
-                          style: new TextStyle(fontSize:16.0,
-                              color: const Color(0xFFce2323),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Roboto"),
-                        )
-                    ),
-
-                    new FlatButton(key:null, onPressed:buttonPressed,
+                    new FlatButton(key:null,
+                        onPressed:(){
+                            //TODO: Add confirm dialog before deleting all pixels
+                            var db_helper = DBHelper();
+                            db_helper.deleteAllPixels();
+                        },
                         child:
                         new Text(
                           "Remove all",
@@ -94,10 +88,6 @@ class _GalleryState extends State<Gallery> {
 
     );
   }
-  void buttonPressed(){}
-
-  void radioChanged(double value) {}
-
 }
 
 
@@ -130,9 +120,7 @@ List<Widget> getGalleryRows(){
                      fontFamily: "Roboto"),
                )
            ),
-
          ]
-
      );
 
      row_list.add(px_row);
