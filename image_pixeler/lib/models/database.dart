@@ -94,12 +94,7 @@ class DBHelper {
     var dbClient = await db;
     await dbClient.rawQuery("DELETE FROM Artboard");
     await dbClient.transaction((txn) async {
-      return await txn.rawInsert(
-          'INSERT INTO Artboard(board) VALUES(' +
-              ''' +
-              ab_base_64 +
-              ''' +
-              ')');
+      return await txn.insert("Artboard", {"board": ab_base_64});
     });
   }
 }

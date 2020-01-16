@@ -20,15 +20,79 @@ class _HomepageState extends State<Homepage> {
   Image _board_image_img = loadArtboardImage();
   List<Pixel> header_pixels = getHeaderPixels();
 
-  Image getHeaderIndex({int idx=0}){
-    double W = MediaQuery.of(context).size.width / 3;
-
-    if( (header_pixels?.length??-1) >= idx){
-      return Image.memory(header_pixels[idx].get_core(w:W.toInt(), h:W.toInt()).getBytes());
-    }else{
-      String fname = "assets/Pixel$idx.jpg";
-      return Image(image: AssetImage(fname), width: W, height: W);
+  double getArtboardSize() {
+    double W = MediaQuery.of(context).size.width;
+    double H = MediaQuery.of(context).size.height;
+    if (W > H) {
+      return H / 3;
+    } else {
+      return W / 1.2;
     }
+  }
+
+  Image getHeaderIndex({int idx = 0}) {
+    if ((header_pixels?.length ?? -1) >= idx) {
+      return Image.memory(
+          header_pixels[idx].get_core().getBytes());
+    } else {
+      String fname = "assets/Pixel$idx.jpg";
+      return Image(image: AssetImage(fname));
+    }
+  }
+
+  List<Widget> getSampleRow() {
+    List<Widget> my_row = new List<Widget>();
+
+    double W = MediaQuery.of(context).size.width;
+    double H = MediaQuery.of(context).size.height;
+
+    if (H > W) {
+      for (int i = 0; i < 2; i++) {
+        my_row.add(Container(
+          child: getHeaderIndex(idx: i),
+          padding: const EdgeInsets.all(4.0),
+          height: W/4,
+          width: W/4,
+        ));
+      }
+    } else {
+      for (int i = 0; i < 8; i++) {
+        my_row.add(Container(
+          child: getHeaderIndex(idx: i),
+          padding: const EdgeInsets.all(4.0),
+          width: W / 10,
+          height: W / 10,
+        ));
+      }
+    }
+
+    // Static add
+    my_row.add(Icon(
+      Icons.view_week,
+      color: Colors.black38,
+      size: 40.0,
+      semanticLabel: 'and more',
+    ));
+
+    // Static add
+    my_row.add(Center(
+      child: Ink(
+        decoration: const ShapeDecoration(
+          color: Colors.blueAccent,
+          shape: CircleBorder(),
+        ),
+        child: IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            Navigator.pushNamed(context, "/gallery");
+          },
+          padding: const EdgeInsets.all(20.0),
+          color: Colors.white,
+        ),
+      ),
+    ));
+
+    return my_row;
   }
 
   @override
@@ -38,74 +102,85 @@ class _HomepageState extends State<Homepage> {
           title: new Text('ImagePixelerApp'),
         ),
         body: new Container(
-          child: new Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: new ListView(
+              //mainAxisAlignment: MainAxisAlignment.start,
+              //mainAxisSize: MainAxisSize.max,
+              //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 // Showing board image:
                 //TODO: Encapsule images inside fixed sized containers
                 new Container(
                   child: _board_image_img,
-                  padding: const EdgeInsets.all(2.0),
+                  width: getArtboardSize(),
+                  height: getArtboardSize(),
                 ),
 
-                FloatingActionButton.extended(
-                    icon: Icon(Icons.add),
-                    key: null,
-                    onPressed: () async {
-                      // Adding new image to database:
-                      var image = await ImagePicker.pickImage(
-                          source: ImageSource.gallery);
+                new Container(
+                  child: FloatingActionButton.extended(
+                      icon: Icon(Icons.add_a_photo),
+                      key: null,
+                      onPressed: () async {
+                        // Adding new image to database:
+                        var image = await ImagePicker.pickImage(
+                            source: ImageSource.gallery);
 
-                      var db_helper = DB.DBHelper();
-                      var img_bytes = image.readAsBytes();
-                      img_bytes.then((byte_list) {
-                        db_helper.saveArtboard(base64Encode(byte_list));
-                      });
+                        var db_helper = DB.DBHelper();
+                        var img_bytes = image.readAsBytes();
+                        img_bytes.then((byte_list) {
+                          db_helper.saveArtboard(base64Encode(byte_list));
+                        });
 
-                      // Updating the header image
-                      setState(() {
-                        _board_image_img = Image.memory(image.readAsBytesSync());
-                      });
-                      // ------------------------------
-                    },
-                    label: new Text(
-                      "Choose artboard image",
-                      style: UTIL.button_text_styles,
-                    )),
-
-                new Text(
-                  "Pixel gallery",
-                  style: new TextStyle(
-                      fontSize: 25.0,
-                      color: const Color(0xFF000000),
-                      fontWeight: FontWeight.w400,
-                      fontFamily: "Roboto"),
+                        // Updating the header image
+                        setState(() {
+                          _board_image_img =
+                              Image.memory(image.readAsBytesSync());
+                        });
+                        // ------------------------------
+                      },
+                      label: new Text(
+                        "Choose artboard image",
+                        style: UTIL.button_text_styles,
+                      )),
+                  width: getArtboardSize(),
                 ),
-                new Row(
+
+                new Container(
+                  child: new Text(
+                    "Pixel gallery",
+                    style: new TextStyle(
+                        fontSize: 25.0,
+                        color: const Color(0xFF000000),
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Roboto"),
+                  ),
+                  padding: const EdgeInsets.all(15.0),
+                  alignment: Alignment.center,
+                ),
+
+                Container(
+                  child: new Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      getHeaderIndex(idx: 0),
-                      getHeaderIndex(idx: 1),
-                      new IconButton(icon: Icon(Icons.edit),
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/gallery");
-                        },
-                      )
-                    ]),
+                    children: getSampleRow(),
+                  ),
+                  alignment: Alignment.center,
+                ),
 
-                new FlatButton(
-                    key: null,
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/generate");
-                    },
-                    child: new Text(
-                      "Generate",
-                      style: UTIL.button_text_styles,
-                    )),
+                Container(
+                  child: FloatingActionButton.extended(
+                      icon: Icon(Icons.star_half),
+                      key: null,
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/generate");
+                      },
+                      label: new Text(
+                        "Generate",
+                        style: UTIL.button_text_styles,
+                      )),
+                  padding: const EdgeInsets.all(10.0),
+                ),
+
                 new FlatButton(
                     key: null,
                     onPressed: () {
@@ -130,12 +205,10 @@ List<Pixel> getHeaderPixels() {
   });
 }
 
-Image loadArtboardImage(){
+Image loadArtboardImage() {
   var imloader = rootBundle.load('assets/Artboard.jpg');
-  imloader.then(
-      (board_bytes){
-        Uint8List board_bytes_ui8 = board_bytes.buffer.asUint8List();
-        return Image.memory(board_bytes_ui8);
-      }
-  );
+  imloader.then((board_bytes) {
+    Uint8List board_bytes_ui8 = board_bytes.buffer.asUint8List();
+    return Image.memory(board_bytes_ui8);
+  });
 }

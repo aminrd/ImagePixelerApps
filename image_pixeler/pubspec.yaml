@@ -64,6 +64,14 @@ flutter:
     - assets/Pixel0.jpg
     - assets/Pixel1.jpg
     - assets/Pixel2.jpg
+    - assets/Pixel3.jpg
+    - assets/Pixel4.jpg
+    - assets/Pixel5.jpg
+    - assets/Pixel6.jpg
+    - assets/Pixel7.jpg
+    - assets/Pixel8.jpg
+    - assets/Pixel9.jpg
+    - assets/Pixel10.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
