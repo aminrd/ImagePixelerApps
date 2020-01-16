@@ -23,6 +23,9 @@ class _AboutState extends State<About> {
   Widget build(BuildContext context) {
     //TODO: move the back button to the top in blue
     return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('ImagePixelerApp'),
+      ),
       body: new Container(
         child: new Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -30,26 +33,17 @@ class _AboutState extends State<About> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               new Container(
-                child: new Image(image: AssetImage("assets/Artboard.jpg")),
+                child: new Image(image: AssetImage("assets/Artboard_after.jpg")),
                 padding: const EdgeInsets.all(2.0),
                 alignment: Alignment.center,
               ),
-              new RaisedButton(
-                  key: null,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  color: const Color(0xFFe0e0e0),
-                  child: new Text(
-                    "Back to home",
-                    style: UTIL.button_text_styles,
-                  )),
               new Expanded(
                   flex: 1,
                   child: new SingleChildScrollView(
                     child: new RichText(
+                      textAlign: TextAlign.justify,
                       text: TextSpan(
-                          text: "About and Lisence agreement",
+                          text: "About and Lisence agreement\n\n",
                           style: new TextStyle(
                               fontSize: 30.0,
                               color: const Color(0xFF000000),
@@ -88,7 +82,7 @@ class _AboutState extends State<About> {
                             TextSpan(
                                 style: body,
                                 text:
-                                    "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n"),
+                                    "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\n"),
                             TextSpan(
                                 style: body,
                                 text:

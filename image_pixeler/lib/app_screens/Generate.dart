@@ -19,6 +19,9 @@ class _GenerateState extends State<Generate> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('ImagePixelerApp'),
+      ),
       body:
       new Container(
         child:

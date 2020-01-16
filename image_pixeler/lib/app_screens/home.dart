@@ -24,7 +24,7 @@ class _HomepageState extends State<Homepage> {
     double W = MediaQuery.of(context).size.width;
     double H = MediaQuery.of(context).size.height;
     if (W > H) {
-      return H / 3;
+      return H / 1.5;
     } else {
       return W / 1.2;
     }
@@ -99,7 +99,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text('ImagePixelerApp'),
+          title: new Text('Welcome to Image Pixeler'),
         ),
         body: new Container(
           child: new ListView(
@@ -113,11 +113,13 @@ class _HomepageState extends State<Homepage> {
                   child: _board_image_img,
                   width: getArtboardSize(),
                   height: getArtboardSize(),
+                  padding: const EdgeInsets.all(5.0),
                 ),
 
                 new Container(
                   child: FloatingActionButton.extended(
-                      icon: Icon(Icons.add_a_photo),
+                    heroTag: "Choosing Image",
+                      icon: Icon(Icons.add_a_photo, color: Colors.white,),
                       key: null,
                       onPressed: () async {
                         // Adding new image to database:
@@ -169,7 +171,8 @@ class _HomepageState extends State<Homepage> {
 
                 Container(
                   child: FloatingActionButton.extended(
-                      icon: Icon(Icons.star_half),
+                      heroTag: "Generating Image",
+                      icon: Icon(Icons.star_half, color: Colors.white,),
                       key: null,
                       onPressed: () {
                         Navigator.pushNamed(context, "/generate");
@@ -188,7 +191,7 @@ class _HomepageState extends State<Homepage> {
                     },
                     child: new Text(
                       "About and License Agreement",
-                      style: UTIL.button_text_styles,
+                      style: UTIL.button_text_styles_flat,
                     ))
               ]),
           padding: const EdgeInsets.all(5.0),
