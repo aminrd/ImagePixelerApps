@@ -29,8 +29,7 @@ class Pixel{
 
   Pixel.fromFile(IO.File file){
     this._id = 0;
-    Image load_image = Image.file(file);
-    IMG.Image load_image_converted = IMG.Image.fromBytes(load_image.width.toInt(), load_image.height.toInt(), file.readAsBytesSync());
+    IMG.Image load_image_converted = IMG.Image.fromBytes(512, 512, file.readAsBytesSync());
     this.import(load_image_converted);
   }
 
@@ -53,10 +52,10 @@ class Pixel{
 
 
   void import(IMG.Image image){
-    int w_size = max(image.height, image.width);
+    int w_size = min(image.height, image.width);
 
     // Crop the original image into a square image
-    if(w_size > image.height){
+    if(w_size < image.width){
       image = IMG.copyCrop(image, (image.width - w_size) >> 1 , 0, w_size, w_size);
     }else{
       image = IMG.copyCrop(image, 0, (image.height - w_size) >> 1, w_size, w_size);
@@ -109,5 +108,14 @@ class Pixel{
       }
     }
     return d_sum;
+  }
+
+  Map<String, dynamic> toMap(){
+    return{
+      'width': _width,
+      'height': _height,
+      'baseImage': this.getBaseRaw(),
+      'coreImage': this.getCoreRaw()
+    };
   }
 }

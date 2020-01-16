@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io' as IO;
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_pixeler/models/Pixel.dart';
 import 'package:image_pixeler/models/database.dart' as DB;
@@ -15,15 +17,8 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  //TODO: how to define a default state in flutter
-  IO.File _board_image = IO.File("./assets/Artboard.jpg");
+  Image _board_image_img = loadArtboardImage();
   List<Pixel> header_pixels = getHeaderPixels();
-
-  @override
-  void setState(fn) {
-    _board_image = IO.File("./assets/Artboard.jpg");
-    super.setState(fn);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +35,7 @@ class _HomepageState extends State<Homepage> {
                 // Showing board image:
                 //TODO: Encapsule images inside fixed sized containers
                 new Container(
-                  child: Image.file(_board_image),
+                  child: _board_image_img,
                   padding: const EdgeInsets.all(2.0),
                 ),
 
@@ -60,7 +55,7 @@ class _HomepageState extends State<Homepage> {
 
                       // Updating the header image
                       setState(() {
-                        _board_image = image;
+                        _board_image_img = Image.memory(image.readAsBytesSync());
                       });
                       // ------------------------------
                     },
@@ -82,8 +77,8 @@ class _HomepageState extends State<Homepage> {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Image.memory(header_pixels[0].get_core(w:20, h:20).getBytes()),
-                      Image.memory(header_pixels[1].get_core(w:20, h:20).getBytes()),
+//                      Image.memory(header_pixels[0].get_core(w:20, h:20).getBytes()),
+//                      Image.memory(header_pixels[1].get_core(w:20, h:20).getBytes()),
                       new IconButton(icon: Icon(Icons.edit),
                         onPressed: () {
                           Navigator.pushNamed(context, "/gallery");
@@ -122,4 +117,14 @@ List<Pixel> getHeaderPixels() {
   pixel_list.then((plist) {
     return plist;
   });
+}
+
+Image loadArtboardImage(){
+  var imloader = rootBundle.load('assets/Artboard.jpg');
+  imloader.then(
+      (board_bytes){
+        Uint8List board_bytes_ui8 = board_bytes.buffer.asUint8List();
+        return Image.memory(board_bytes_ui8);
+      }
+  );
 }

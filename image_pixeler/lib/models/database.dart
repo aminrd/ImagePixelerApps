@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io'; // as io
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Artboard.dart';
+
+import 'package:image/image.dart' as IMG;
 
 // Importing this app models
 import 'package:image_pixeler/models/Pixel.dart';
@@ -36,24 +41,7 @@ class DBHelper {
   void savePixel(Pixel pixel) async {
     var dbClient = await db;
     await dbClient.transaction((txn) async {
-      return await txn.rawInsert(
-          'INSERT INTO Pixels(width, height, baseImage, coreImage ) VALUES(' +
-              ''' +
-              pixel.getWidthRaw() +
-              ''' +
-              ',' +
-              ''' +
-              pixel.getHeightRaw() +
-              ''' +
-              ',' +
-              ''' +
-              pixel.getBaseRaw() +
-              ''' +
-              ',' +
-              ''' +
-              pixel.getCoreRaw() +
-              ''' +
-              ')');
+      return await txn.insert('Pixels', pixel.toMap());
     });
   }
 
@@ -69,16 +57,20 @@ class DBHelper {
     for (int i = 0; i < pick_number; i++) {
       pixels.add(new Pixel(list[i]["id"], list[i]["width"], list[i]["height"], list[i]["baseImage"], list[i]["coreImage"]));
     }
+    /*
     if(pixels.length < need){
       if(need > 3){
         need = 3;
       }
       for(int i=0; i<need; i++){
-        File file = File("assets/Pixel$i.jpg");
-        Pixel default_pix = Pixel.fromFile(file);
+        print("assets/Pixel$i.jpg");
+        File asset_image = File("assets/Pixel$i.jpg");
+        IMG.Image other = IMG.Image.fromBytes(512, 512, asset_image.readAsBytesSync());
+        Pixel default_pix = Pixel.fromImage(other);
         pixels.add(default_pix);
       }
     }
+     */
     return pixels;
   }
 

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:image/image.dart' as IMG;
 import 'package:flutter/material.dart';
@@ -43,8 +44,8 @@ class _GalleryState extends State<Gallery> {
                         onPressed:() async{
                           // Adding new image to database:
                           var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-                          Image uiImage = new Image.file(image);
-                          IMG.Image img = new IMG.Image.fromBytes(uiImage.width.toInt(), uiImage.width.toInt(), image.readAsBytesSync());
+                          //Image uiImage = new Image.file(image);
+                          IMG.Image img = IMG.decodeImage(image.readAsBytesSync());
                           Pixel new_pixel = new Pixel.fromImage(img);
                           var db_helper = DBHelper();
                           db_helper.savePixel(new_pixel);
@@ -72,7 +73,7 @@ class _GalleryState extends State<Gallery> {
 
               ),
 
-              ListView( children: getGalleryRows())
+              //ListView( children: getGalleryRows(), scrollDirection: Axis.vertical, shrinkWrap: true)
             ]
 
         ),
@@ -86,7 +87,7 @@ class _GalleryState extends State<Gallery> {
 }
 
 
-
+//TODO: handle even if no image was given
 List<Widget> getGalleryRows(){
   List<Widget> row_list = new List<Widget>();
   var db_helper = DBHelper();
