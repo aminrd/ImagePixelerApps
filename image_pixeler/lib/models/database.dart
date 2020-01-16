@@ -57,20 +57,8 @@ class DBHelper {
     for (int i = 0; i < pick_number; i++) {
       pixels.add(new Pixel(list[i]["id"], list[i]["width"], list[i]["height"], list[i]["baseImage"], list[i]["coreImage"]));
     }
-    /*
-    if(pixels.length < need){
-      if(need > 3){
-        need = 3;
-      }
-      for(int i=0; i<need; i++){
-        print("assets/Pixel$i.jpg");
-        File asset_image = File("assets/Pixel$i.jpg");
-        IMG.Image other = IMG.Image.fromBytes(512, 512, asset_image.readAsBytesSync());
-        Pixel default_pix = Pixel.fromImage(other);
-        pixels.add(default_pix);
-      }
-    }
-     */
+    int plength = pixels.length;
+    print("------------- size of the pixels is $plength\n");
     return pixels;
   }
 

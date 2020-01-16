@@ -20,6 +20,17 @@ class _HomepageState extends State<Homepage> {
   Image _board_image_img = loadArtboardImage();
   List<Pixel> header_pixels = getHeaderPixels();
 
+  Image getHeaderIndex({int idx=0}){
+    double W = MediaQuery.of(context).size.width / 3;
+
+    if( (header_pixels?.length??-1) >= idx){
+      return Image.memory(header_pixels[idx].get_core(w:W.toInt(), h:W.toInt()).getBytes());
+    }else{
+      String fname = "assets/Pixel$idx.jpg";
+      return Image(image: AssetImage(fname), width: W, height: W);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -77,8 +88,8 @@ class _HomepageState extends State<Homepage> {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-//                      Image.memory(header_pixels[0].get_core(w:20, h:20).getBytes()),
-//                      Image.memory(header_pixels[1].get_core(w:20, h:20).getBytes()),
+                      getHeaderIndex(idx: 0),
+                      getHeaderIndex(idx: 1),
                       new IconButton(icon: Icon(Icons.edit),
                         onPressed: () {
                           Navigator.pushNamed(context, "/gallery");

@@ -59,6 +59,16 @@ class _GalleryState extends State<Gallery> {
                     ),
                     new FlatButton(key:null,
                         onPressed:(){
+                          Navigator.pop(context);
+                        },
+                        child:
+                        new Text(
+                          "Back to Home",
+                          style: UTIL.button_text_styles,
+                        )
+                    ),
+                    new FlatButton(key:null,
+                        onPressed:(){
                             //TODO: Add confirm dialog before deleting all pixels
                             var db_helper = DBHelper();
                             db_helper.deleteAllPixels();
@@ -73,7 +83,7 @@ class _GalleryState extends State<Gallery> {
 
               ),
 
-              //ListView( children: getGalleryRows(), scrollDirection: Axis.vertical, shrinkWrap: true)
+              ListView( children: getGalleryRows(), scrollDirection: Axis.vertical, shrinkWrap: true)
             ]
 
         ),

@@ -65,8 +65,9 @@ class Pixel{
     IMG.Image base = IMG.copyResize(image, width: 256, height: 256);
     IMG.Image core = IMG.copyResize(base, width: 16, height: 16);
 
-    _base64Image = base64Encode(base.getBytes());
-    _core = base64Encode(core.getBytes());
+    
+    _base64Image = base64Encode(IMG.encodeJpg(base));
+    _core = base64Encode(IMG.encodeJpg((core)));
   }
 
   IMG.Image resize(int h_new, int w_new){
