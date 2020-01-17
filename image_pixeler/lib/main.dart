@@ -5,6 +5,10 @@ import './app_screens/home.dart';
 import './app_screens/Generate.dart';
 import './app_screens/Gallery.dart';
 import './app_screens/About.dart';
+import 'package:get_it/get_it.dart';
+
+
+import 'package:image_pixeler/models/Artboard.dart';
 
 void main() {
   runApp(new MyApp());

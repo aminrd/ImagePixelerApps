@@ -210,8 +210,9 @@ List<Pixel> getHeaderPixels() {
 
 Image loadArtboardImage() {
   var imloader = rootBundle.load('assets/Artboard.jpg');
-  imloader.then((board_bytes) {
-    Uint8List board_bytes_ui8 = board_bytes.buffer.asUint8List();
+  imloader.then((ByteData board_bytes) {
+    Uint8List board_bytes_ui8 = board_bytes.buffer.asUint8List(board_bytes.offsetInBytes, board_bytes.lengthInBytes);
     return Image.memory(board_bytes_ui8);
   });
 }
+

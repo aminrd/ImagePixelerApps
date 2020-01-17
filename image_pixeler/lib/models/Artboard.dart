@@ -10,7 +10,6 @@ class Artboard{
   IMG.Image board;
   // Size: (1500 x 1500) for (2m x 2m) banner
 
-
   Artboard.fromString(String str){
     final bytes = Base64Decoder().convert(str);
     target = IMG.decodeImage(bytes);
@@ -76,5 +75,4 @@ class Artboard{
     }
     return board;
   }
-
 }
