@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:image/image.dart' as IMG;
 import 'dart:io' as IO;
 
-// TODO: add three default images to pixel list
 
 class Pixel{
   int _id;
@@ -29,7 +28,7 @@ class Pixel{
 
   Pixel.fromFile(IO.File file){
     this._id = 0;
-    IMG.Image load_image_converted = IMG.Image.fromBytes(512, 512, file.readAsBytesSync());
+    IMG.Image load_image_converted = IMG.decodeImage(file.readAsBytesSync());
     this.import(load_image_converted);
   }
 
@@ -110,6 +109,21 @@ class Pixel{
     }
     return d_sum;
   }
+
+  Image pixel2Widget(){
+    final _byteImage = Base64Decoder().convert(this._base64Image);
+    Widget image = Image.memory(_byteImage);
+    return image;
+  }
+
+  Image ImageConvertFlutter2Dart(IMG.Image img){
+    String base64Image = base64Encode(IMG.encodeJpg(img));
+    final _byteImage = Base64Decoder().convert(base64Image);
+    Widget image = Image.memory(_byteImage);
+    return image;
+  }
+
+
 
   Map<String, dynamic> toMap(){
     return{

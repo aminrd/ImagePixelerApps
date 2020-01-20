@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as IMG;
 import 'Pixel.dart';
+import 'dart:io' as IO;
 
 
 class Artboard{
@@ -16,9 +17,22 @@ class Artboard{
     this.board = this.getTarget();
   }
 
+  Artboard.Default(){
+    IO.File default_file = IO.File("assets/Artboard.jpg");
+    final byte_stream = default_file.readAsBytesSync();
+    this.target = IMG.decodeImage(byte_stream);
+    this.board = this.getTarget();
+  }
+
   // Constructor
   Artboard(IMG.Image targ){
     this.target = targ;
+    this.board = this.getTarget();
+  }
+
+  void importFile(IO.File file){
+    final byte_stream = file.readAsBytesSync();
+    this.target = IMG.decodeImage(byte_stream);
     this.board = this.getTarget();
   }
 
@@ -40,6 +54,22 @@ class Artboard{
       }
     }
   }
+
+  Image ImageConvertFlutter2Dart(IMG.Image img){
+    String base64Image = base64Encode(IMG.encodeJpg(img));
+    final _byteImage = Base64Decoder().convert(base64Image);
+    Widget image = Image.memory(_byteImage);
+    return image;
+  }
+
+  Image target2Widget(){
+    return this.ImageConvertFlutter2Dart(this.target);
+  }
+
+  Image board2Widget(){
+    return this.ImageConvertFlutter2Dart(this.board);
+  }
+
 
   IMG.Image build(List<Pixel> pList){
 

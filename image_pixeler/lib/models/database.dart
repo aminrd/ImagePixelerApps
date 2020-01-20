@@ -33,9 +33,6 @@ class DBHelper {
     // When creating the db, create the table
     await db.execute(
         "CREATE TABLE Pixels(id INTEGER PRIMARY KEY, width INTEGER, height INTEGER, baseImage TEXT, coreImage TEXT )");
-
-    await db.execute("CREATE TABLE Artboard(board TEXT)");
-    print("Created tables");
   }
 
   void savePixel(Pixel pixel) async {

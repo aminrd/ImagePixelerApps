@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_pixeler/models/Artboard.dart';
 import 'package:image_pixeler/models/Pixel.dart';
 import 'package:image_pixeler/models/database.dart' as DB;
 import 'package:image_pixeler/models/Utility.dart' as UTIL;
@@ -17,8 +18,9 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  Image _board_image_img = loadArtboardImage();
+  Image _board_image_img = Image(image: AssetImage('assets/Artboard.jpg'));
   List<Pixel> header_pixels = getHeaderPixels();
+  Artboard ab_manager = Artboard.Default();
 
   double getArtboardSize() {
     double W = MediaQuery.of(context).size.width;
@@ -136,6 +138,7 @@ class _HomepageState extends State<Homepage> {
                         setState(() {
                           _board_image_img =
                               Image.memory(image.readAsBytesSync());
+                          ab_manager.importFile(image);
                         });
                         // ------------------------------
                       },
@@ -175,6 +178,7 @@ class _HomepageState extends State<Homepage> {
                       icon: Icon(Icons.star_half, color: Colors.white,),
                       key: null,
                       onPressed: () {
+                        ab_manager.build( getPixelList() );
                         Navigator.pushNamed(context, "/generate");
                       },
                       label: new Text(
@@ -208,11 +212,27 @@ List<Pixel> getHeaderPixels() {
   });
 }
 
-Image loadArtboardImage() {
-  var imloader = rootBundle.load('assets/Artboard.jpg');
-  imloader.then((ByteData board_bytes) {
-    Uint8List board_bytes_ui8 = board_bytes.buffer.asUint8List(board_bytes.offsetInBytes, board_bytes.lengthInBytes);
-    return Image.memory(board_bytes_ui8);
+List<Pixel> getPixelList(){
+  List<Widget> row_list = new List<Widget>();
+  var db_helper = DB.DBHelper();
+  Future<List<Pixel>> plist_future = db_helper.getPixels();
+  
+  plist_future.timeout(const Duration (seconds:10),onTimeout : (){return loadDefaultPixels();});
+  plist_future.catchError((e){return loadDefaultPixels();});
+  plist_future.then( (plist){
+   if( (plist?.length ?? -1) < 0 ){
+      return loadDefaultPixels();
+    }else{
+      return plist;
+    }
   });
 }
 
+List<Pixel> loadDefaultPixels(){
+  List<Pixel> plist = new List<Pixel>();
+  for(int i=0; i<8; i++){
+    Pixel px = Pixel.fromFile(IO.File("assets/Pixel$i.jpg"));
+    plist.add(px);
+  }
+  return plist;
+}

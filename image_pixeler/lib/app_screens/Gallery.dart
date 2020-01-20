@@ -92,10 +92,12 @@ class _GalleryState extends State<Gallery> {
 }
 
 
+
 //TODO: handle even if no image was given**
 List<Widget> getGalleryRows(double W){
   List<Widget> row_list = new List<Widget>();
-
+  var db_helper = DBHelper();
+  Future<List<Pixel>> plist_future = db_helper.getPixels();
 
   for(int i=0; i<8; i++){
     Widget px_row = new Card(
@@ -123,13 +125,7 @@ List<Widget> getGalleryRows(double W){
 
     row_list.add(px_row);
   }
-  //TODO: Make rows beautiful with lines and alignment, ...
-  return row_list;
 
-
-  var db_helper = DBHelper();
-  Future<List<Pixel>> plist_future = db_helper.getPixels();
-  
   plist_future.then( (plist) {
 
     for(Pixel pixel in plist){
@@ -153,3 +149,5 @@ List<Widget> getGalleryRows(double W){
   });
   return row_list;
 }
+
+
