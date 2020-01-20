@@ -98,20 +98,28 @@ List<Widget> getGalleryRows(double W){
 
 
   for(int i=0; i<8; i++){
-    Widget px_row = new Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(child:Image(image: AssetImage("assets/Pixel$i.jpg"), width: W/3, height: W/3),padding: const EdgeInsets.all(5.0),),
-          new IconButton(icon: Icon(Icons.delete),
-              onPressed: (){
-                //var db_helper_del = DBHelper();
-                //db_helper_del.deletePixel(pixel);
-              }
-          ),
-        ]
+    Widget px_row = new Card(
+      elevation: 5,
+      child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(child:Image(image: AssetImage("assets/Pixel$i.jpg"),width: W/3, height: W/3), padding: const EdgeInsets.all(5.0), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10), boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],),),
+
+            //TODO: add a column about the average pixel, or how does it look like in extreme case
+            new IconButton(icon: Icon(Icons.delete),
+                iconSize: 36,
+                color: Colors.redAccent,
+                onPressed: (){
+                  //var db_helper_del = DBHelper();
+                  //db_helper_del.deletePixel(pixel);
+                }
+            ),
+          ]
+      )
     );
+
 
     row_list.add(px_row);
   }

@@ -36,6 +36,11 @@ class _AboutState extends State<About> {
                 child: new Image(image: AssetImage("assets/Artboard_after.jpg")),
                 padding: const EdgeInsets.all(2.0),
                 alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 15)],
+                ),
               ),
               new Expanded(
                   flex: 1,
