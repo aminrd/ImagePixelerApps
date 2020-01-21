@@ -123,6 +123,24 @@ class Pixel{
     return image;
   }
 
+  Image getEstimatedPixel({W:16, H:16}){
+    IMG.Image cr = this.get_core();
+
+    double avg = 0;
+    for(int i=0; i<16; i++){
+      for(int j=0; j<16; j++){
+        avg += ( cr.getPixelSafe(i, j) / 256);
+      }
+    }
+
+    IMG.Image output = IMG.Image.rgb(W, H);
+    for(int i=0; i<W; i++){
+      for(int j=0; j<H; j++){
+        output.setPixelSafe(i, j, avg.toInt());
+      }
+    }
+    return this.ImageConvertFlutter2Dart(output);
+  }
 
 
   Map<String, dynamic> toMap(){

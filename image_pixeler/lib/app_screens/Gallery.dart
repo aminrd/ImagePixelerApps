@@ -4,9 +4,10 @@ import 'package:image/image.dart' as IMG;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:image_pixeler/models/database.dart';
+import 'package:image_pixeler/models/database.dart' as DB;
 import 'package:image_pixeler/models/Pixel.dart';
 import 'package:image_pixeler/models/Utility.dart' as UTIL;
+import 'dart:io' as IO;
 
 class Gallery extends StatefulWidget {
   Gallery({Key key}) : super(key: key);
@@ -43,7 +44,7 @@ class _GalleryState extends State<Gallery> {
                           //Image uiImage = new Image.file(image);
                           IMG.Image img = IMG.decodeImage(image.readAsBytesSync());
                           Pixel new_pixel = new Pixel.fromImage(img);
-                          var db_helper = DBHelper();
+                          var db_helper = DB.DBHelper();
                           db_helper.savePixel(new_pixel);
                           // ------------------------------
                         },
@@ -60,7 +61,7 @@ class _GalleryState extends State<Gallery> {
                       child: new OutlineButton(key:null,
                           onPressed:(){
                             //TODO: Add confirm dialog before deleting all pixels
-                            var db_helper = DBHelper();
+                            var db_helper = DB.DBHelper();
                             db_helper.deleteAllPixels();
                           },
                           child:
@@ -93,13 +94,39 @@ class _GalleryState extends State<Gallery> {
 
 
 
-//TODO: handle even if no image was given**
-List<Widget> getGalleryRows(double W){
+List<Pixel> loadDefaultPixels(){
+  List<Pixel> plist = new List<Pixel>();
+  for(int i=0; i<8; i++){
+    Pixel px = Pixel.fromFile(IO.File("assets/Pixel$i.jpg"));
+    plist.add(px);
+  }
+  return plist;
+}
+
+
+List<Pixel> getPixelList(){
   List<Widget> row_list = new List<Widget>();
-  var db_helper = DBHelper();
+  var db_helper = DB.DBHelper();
   Future<List<Pixel>> plist_future = db_helper.getPixels();
 
-  for(int i=0; i<8; i++){
+  plist_future.timeout(const Duration (seconds:10),onTimeout : (){return loadDefaultPixels();});
+  plist_future.catchError((e){return loadDefaultPixels();});
+  plist_future.then( (plist){
+    if( (plist?.length ?? -1) < 0 ){
+      return loadDefaultPixels();
+    }else{
+      return plist;
+    }
+  });
+}
+
+
+List<Widget> getGalleryRows(double W){
+  List<Widget> row_list = new List<Widget>();
+  var db_helper = DB.DBHelper();
+  List<Pixel> plist = getPixelList();
+
+  for(Pixel pixel in plist){
     Widget px_row = new Card(
       elevation: 5,
       child: new Row(
@@ -107,9 +134,19 @@ List<Widget> getGalleryRows(double W){
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(child:Image(image: AssetImage("assets/Pixel$i.jpg"),width: W/3, height: W/3), padding: const EdgeInsets.all(5.0), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10), boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],),),
+            Container(child:pixel.pixel2Widget(), height: W/3, width: W/3 ,padding: const EdgeInsets.all(5.0), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10), boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],),),
 
-            //TODO: add a column about the average pixel, or how does it look like in extreme case
+            new Column(
+              children: <Widget>[
+                Text("average"),
+                Container(
+                  child: pixel.getEstimatedPixel(),
+                  height: W/6,
+                  width: W/6,
+                )
+              ],
+            ),
+
             new IconButton(icon: Icon(Icons.delete),
                 iconSize: 36,
                 color: Colors.redAccent,
@@ -126,27 +163,6 @@ List<Widget> getGalleryRows(double W){
     row_list.add(px_row);
   }
 
-  plist_future.then( (plist) {
-
-    for(Pixel pixel in plist){
-     Widget px_row = new Row(
-         mainAxisAlignment: MainAxisAlignment.start,
-         mainAxisSize: MainAxisSize.max,
-         crossAxisAlignment: CrossAxisAlignment.center,
-         children: <Widget>[
-           new Image.memory(pixel.get_core(w: 16, h:16).getBytes()),
-           new IconButton(icon: Icon(Icons.delete),
-               onPressed: (){
-                 var db_helper_del = DBHelper();
-                 db_helper_del.deletePixel(pixel);
-               }
-           ),
-         ]
-     );
-
-     row_list.add(px_row);
-    }
-  });
   return row_list;
 }
 

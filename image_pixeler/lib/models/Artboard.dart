@@ -104,8 +104,8 @@ class Artboard{
 
     // Set some pixels to red for now
 
-    for(var i=board.width - 10; i<board.width + 10; i++){
-      for(var j=board.height - 10; j<board.height + 10; j++){
+    for(int i=board.width - 10; i<board.width + 10; i++){
+      for(int j=board.height - 10; j<board.height + 10; j++){
         board.setPixelRgba(i, j, 255, 0, 0);
       }
     }
