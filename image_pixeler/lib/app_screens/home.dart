@@ -9,6 +9,7 @@ import 'package:image_pixeler/models/Artboard.dart';
 import 'package:image_pixeler/models/Pixel.dart';
 import 'package:image_pixeler/models/database.dart' as DB;
 import 'package:image_pixeler/models/Utility.dart' as UTIL;
+import 'package:get_it/get_it.dart' as GET_IT;
 
 class Homepage extends StatefulWidget {
   Homepage({Key key}) : super(key: key);
@@ -20,7 +21,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   Image _board_image_img = Image(image: AssetImage('assets/Artboard.jpg'));
   List<Pixel> header_pixels = getHeaderPixels();
-  Artboard ab_manager = Artboard.Default();
+  GET_IT.GetIt locator = GET_IT.GetIt.instance;
 
   double getArtboardSize() {
     double W = MediaQuery.of(context).size.width;
@@ -138,6 +139,8 @@ class _HomepageState extends State<Homepage> {
                         setState(() {
                           _board_image_img =
                               Image.memory(image.readAsBytesSync());
+
+                          Artboard ab_manager = locator.get<Artboard>();
                           ab_manager.importFile(image);
                         });
                         // ------------------------------
@@ -178,6 +181,7 @@ class _HomepageState extends State<Homepage> {
                       icon: Icon(Icons.star_half, color: Colors.white,),
                       key: null,
                       onPressed: () {
+                        Artboard ab_manager = locator.get<Artboard>();
                         ab_manager.build( getPixelList() );
                         Navigator.pushNamed(context, "/generate");
                       },

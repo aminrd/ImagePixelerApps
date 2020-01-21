@@ -5,12 +5,19 @@ import './app_screens/home.dart';
 import './app_screens/Generate.dart';
 import './app_screens/Gallery.dart';
 import './app_screens/About.dart';
-import 'package:get_it/get_it.dart';
+import 'package:get_it/get_it.dart' as GET_IT;
 
 
 import 'package:image_pixeler/models/Artboard.dart';
 
+// Registering Artboard in Get IT
+GET_IT.GetIt locator = GET_IT.GetIt.instance;
+
+
 void main() {
+  Artboard ab = Artboard.Default();
+  locator.registerSingleton<Artboard>(ab);
+
   runApp(new MyApp());
 }
 class MyApp extends StatelessWidget {

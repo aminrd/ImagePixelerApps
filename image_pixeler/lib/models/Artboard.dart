@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as IMG;
 import 'Pixel.dart';
@@ -70,6 +71,11 @@ class Artboard{
     return this.ImageConvertFlutter2Dart(this.board);
   }
 
+  Uint8List getSavable(){
+    String base64Image = base64Encode(IMG.encodeJpg(this.board));
+    final _byteImage = Base64Decoder().convert(base64Image);
+    return _byteImage;
+  }
 
   IMG.Image build(List<Pixel> pList){
 
