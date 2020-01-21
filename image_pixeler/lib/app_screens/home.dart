@@ -206,26 +206,28 @@ class _HomepageState extends State<Homepage> {
 
 List<Pixel> getHeaderPixels() {
   var db_helper = DB.DBHelper();
+  List<Pixel> ret_val = new List<Pixel>();
   var pixel_list = db_helper.getPixels(need: 2);
   pixel_list.then((plist) {
-    return plist;
+    ret_val =  plist;
   });
+  return ret_val;
 }
 
 List<Pixel> getPixelList(){
   List<Widget> row_list = new List<Widget>();
   var db_helper = DB.DBHelper();
   Future<List<Pixel>> plist_future = db_helper.getPixels();
-  
-  plist_future.timeout(const Duration (seconds:10),onTimeout : (){return loadDefaultPixels();});
-  plist_future.catchError((e){return loadDefaultPixels();});
+  List<Pixel> ret_val = new List<Pixel>();
+
   plist_future.then( (plist){
-   if( (plist?.length ?? -1) < 0 ){
-      return loadDefaultPixels();
+   if( (plist?.length ?? -1) <= 0 ){
+      ret_val = loadDefaultPixels();
     }else{
-      return plist;
+      ret_val = plist;
     }
   });
+  return ret_val;
 }
 
 List<Pixel> loadDefaultPixels(){

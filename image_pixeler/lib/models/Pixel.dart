@@ -104,9 +104,6 @@ class Pixel{
   IMG.Image get_core({int w = -1, int h = -1}){
     final bytes =  base64Decode(this._core);
     IMG.Image img = IMG.decodeImage(bytes);
-    print("+++++++++");
-    print(img.getBytes());
-    print("+++++++++");
     if(w < 0 || h < 0){
       return img;
     }else{
@@ -140,7 +137,6 @@ class Pixel{
   }
 
   Image pixel2Widget(){
-    print(this._base64Image);
     final _byteImage = base64.decode(this._base64Image);
     Widget image = Image.memory(_byteImage);
     return image;

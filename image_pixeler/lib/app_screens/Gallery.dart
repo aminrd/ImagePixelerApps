@@ -114,24 +114,22 @@ class _GalleryState extends State<Gallery> {
 
 
   List<Pixel> getPixelList() {
-    return loadDefaultPixels();
+    //return loadDefaultPixels();
     List<Widget> row_list = new List<Widget>();
     var db_helper = DB.DBHelper();
     Future<List<Pixel>> plist_future = db_helper.getPixels();
+    List<Pixel> return_value = new List<Pixel>();
 
-    plist_future.timeout(const Duration (seconds: 10), onTimeout: () {
-      return loadDefaultPixels();
-    });
-    plist_future.catchError((e) {
-      return loadDefaultPixels();
-    });
     plist_future.then((plist) {
-      if ((plist?.length ?? -1) < 0) {
-        return loadDefaultPixels();
+      if ((plist?.length ?? -1) <= 0) {
+        return_value = loadDefaultPixels();
       } else {
-        return plist;
+        return_value = plist;
       }
     });
+
+    return return_value;
+
   }
 
 
@@ -139,10 +137,6 @@ class _GalleryState extends State<Gallery> {
     List<Widget> row_list = new List<Widget>();
     var db_helper = DB.DBHelper();
     List<Pixel> plist = getPixelList();
-
-    print("------------------------------");
-    print(plist.length);
-    print("------------------------------");
 
     for (int it = 0; it < plist.length; it++) {
       Widget px_row = new Card(
