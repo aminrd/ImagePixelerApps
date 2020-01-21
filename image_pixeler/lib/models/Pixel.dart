@@ -28,8 +28,8 @@ class Pixel{
   String _base64Image = base64Encode( getRandomImage(size:256) );
 
   // Storing size for future purposes
-  int _height = 0;
-  int _width = 0;
+  int _height = 256;
+  int _width = 256;
 
   bool is_default = false;
 
@@ -167,8 +167,6 @@ class Pixel{
     }
     return this.ImageConvertFlutter2Dart(output);
   }
-
-  // Implementing operators
 
 
   Map<String, dynamic> toMap(){
