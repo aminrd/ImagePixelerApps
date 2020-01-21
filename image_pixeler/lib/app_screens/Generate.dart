@@ -54,7 +54,9 @@ class _GenerateState extends State<Generate> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-
+      appBar: new AppBar(
+        title: new Text('Artboard generated successfuly'),
+      ),
       body:
       new Container(
         child:
@@ -88,17 +90,6 @@ class _GenerateState extends State<Generate> {
                 child: getArtboadBoard(),
                 height: getArtboardSize(),
                 width: getArtboardSize(),
-              ),
-
-              new RaisedButton(key:null,
-                onPressed: (){
-                  Navigator.of(context).pop();
-                },
-                  child:
-                  new Text(
-                    "Back to Home",
-                    style: UTIL.button_text_styles,
-                  )
               ),
 
               new RaisedButton(key:null,
