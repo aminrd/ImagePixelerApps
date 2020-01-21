@@ -7,21 +7,34 @@ import 'package:image/image.dart' as IMG;
 import 'dart:io' as IO;
 
 
-class Pixel{
+List<int> getRandomImage({size:256}){
+  int R = Random().nextInt(255);
+  int G = Random().nextInt(255);
+  int B = Random().nextInt(255);
 
-  //TODO: operator = implementation
-  int _id;
+  IMG.Image rnd_image = new IMG.Image.rgb(size, size);
+  for(int i=0; i<size; i++){
+    for(int j=0; j<size; j++){
+      rnd_image.setPixelRgba(i, j, R, G, B);
+    }
+  }
+  return IMG.encodeJpg(rnd_image);
+}
+
+
+class Pixel{
+  int _id = 0;
   // Original image of size 256x256x3
-  String _base64Image;
+  String _base64Image = base64Encode( getRandomImage(size:256) );
 
   // Storing size for future purposes
-  int _height;
-  int _width;
+  int _height = 0;
+  int _width = 0;
 
   bool is_default = false;
 
   // Core is a 16x16x3 thumbnail that is used for comparing Pixels
-  String _core;
+  String _core = base64Encode( getRandomImage(size:16) );
 
   // Defining class constructors
   Pixel(this._id, this._width, this._height, this._base64Image, this._core);
@@ -63,7 +76,6 @@ class Pixel{
     return _base64Image;
   }
 
-
   void import(IMG.Image image){
     int w_size = min(image.height, image.width);
 
@@ -77,7 +89,6 @@ class Pixel{
     // Storing two copies of image, a core and a base
     IMG.Image base = IMG.copyResize(image, width: 256, height: 256);
     IMG.Image core = IMG.copyResize(base, width: 16, height: 16);
-
     
     this._base64Image = base64Encode(IMG.encodeJpg(base));
     this._core = base64Encode(IMG.encodeJpg((core)));
@@ -91,8 +102,11 @@ class Pixel{
   }
 
   IMG.Image get_core({int w = -1, int h = -1}){
-    final bytes =  Base64Decoder().convert(_core);
+    final bytes =  base64Decode(this._core);
     IMG.Image img = IMG.decodeImage(bytes);
+    print("+++++++++");
+    print(img.getBytes());
+    print("+++++++++");
     if(w < 0 || h < 0){
       return img;
     }else{
@@ -157,6 +171,8 @@ class Pixel{
     }
     return this.ImageConvertFlutter2Dart(output);
   }
+
+  // Implementing operators
 
 
   Map<String, dynamic> toMap(){

@@ -9,8 +9,8 @@ import 'dart:io' as IO;
 
 
 class Artboard{
-  IMG.Image target;
-  IMG.Image board;
+  IMG.Image target = IMG.decodeJpg(getRandomImage()) ;
+  IMG.Image board = IMG.decodeJpg(getRandomImage()) ;
   // Size: (1500 x 1500) for (2m x 2m) banner
 
   Artboard.fromString(String str){
