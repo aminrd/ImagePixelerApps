@@ -15,6 +15,7 @@ GET_IT.GetIt locator = GET_IT.GetIt.instance;
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Artboard ab = Artboard.Default();
   locator.registerSingleton<Artboard>(ab);
 

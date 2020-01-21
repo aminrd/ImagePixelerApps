@@ -21,7 +21,6 @@ class _AboutState extends State<About> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: move the back button to the top in blue
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('ImagePixelerApp'),

@@ -111,7 +111,6 @@ class _HomepageState extends State<Homepage> {
               //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 // Showing board image:
-                //TODO: Encapsule images inside fixed sized containers
                 new Container(
                   child: _board_image_img,
                   width: getArtboardSize(),
@@ -233,6 +232,7 @@ List<Pixel> loadDefaultPixels(){
   List<Pixel> plist = new List<Pixel>();
   for(int i=0; i<8; i++){
     Pixel px = Pixel.fromFile(IO.File("assets/Pixel$i.jpg"));
+    px.is_default = true;
     plist.add(px);
   }
   return plist;

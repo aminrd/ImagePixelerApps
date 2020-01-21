@@ -55,7 +55,6 @@ class DBHelper {
       pixels.add(new Pixel(list[i]["id"], list[i]["width"], list[i]["height"], list[i]["baseImage"], list[i]["coreImage"]));
     }
     int plength = pixels.length;
-    print("------------- size of the pixels is $plength\n");
     return pixels;
   }
 

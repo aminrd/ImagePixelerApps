@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image/image.dart' as IMG;
 import 'Pixel.dart';
 import 'dart:io' as IO;
@@ -19,10 +20,12 @@ class Artboard{
   }
 
   Artboard.Default(){
-    IO.File default_file = IO.File("assets/Artboard.jpg");
-    final byte_stream = default_file.readAsBytesSync();
-    this.target = IMG.decodeImage(byte_stream);
-    this.board = this.getTarget();
+    // IO.File default_file = IO.File("./assets/Artboard.jpg");
+    var content_data_future = rootBundle.load("assets/Artboard.jpg");
+    content_data_future.then((byte_data){
+      this.target = IMG.decodeImage(byte_data.buffer.asUint8List());
+      this.board = this.getTarget();
+    });
   }
 
   // Constructor

@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:image/image.dart' as IMG;
 import 'dart:io' as IO;
 
 
 class Pixel{
+
+  //TODO: operator = implementation
   int _id;
   // Original image of size 256x256x3
   String _base64Image;
@@ -14,6 +17,8 @@ class Pixel{
   // Storing size for future purposes
   int _height;
   int _width;
+
+  bool is_default = false;
 
   // Core is a 16x16x3 thumbnail that is used for comparing Pixels
   String _core;
@@ -30,6 +35,15 @@ class Pixel{
     this._id = 0;
     IMG.Image load_image_converted = IMG.decodeImage(file.readAsBytesSync());
     this.import(load_image_converted);
+  }
+
+  Pixel.fromFileName(String name){
+    var fname_future = rootBundle.load(name);
+    fname_future.then((byte_data){
+      this._id = 0;
+      IMG.Image load_image = IMG.decodeImage(byte_data.buffer.asUint8List());
+      this.import(load_image);
+    });
   }
 
   // DB-related functions
@@ -65,8 +79,9 @@ class Pixel{
     IMG.Image core = IMG.copyResize(base, width: 16, height: 16);
 
     
-    _base64Image = base64Encode(IMG.encodeJpg(base));
-    _core = base64Encode(IMG.encodeJpg((core)));
+    this._base64Image = base64Encode(IMG.encodeJpg(base));
+    this._core = base64Encode(IMG.encodeJpg((core)));
+
   }
 
   IMG.Image resize(int h_new, int w_new){
@@ -111,7 +126,8 @@ class Pixel{
   }
 
   Image pixel2Widget(){
-    final _byteImage = Base64Decoder().convert(this._base64Image);
+    print(this._base64Image);
+    final _byteImage = base64.decode(this._base64Image);
     Widget image = Image.memory(_byteImage);
     return image;
   }
