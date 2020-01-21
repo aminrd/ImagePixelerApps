@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_pixeler/models/database.dart' as DB;
 import 'package:image_pixeler/models/Pixel.dart';
 import 'package:image_pixeler/models/Utility.dart' as UTIL;
+import 'package:fancy_dialog/fancy_dialog.dart' as DIALOG;
 import 'dart:io' as IO;
 
 class Gallery extends StatefulWidget {
@@ -64,10 +65,18 @@ class _GalleryState extends State<Gallery> {
                     ),
                     Container(
                       child: new OutlineButton(key: null,
-                          onPressed: () {
-                            //TODO: Add confirm dialog before deleting all pixels
-                            var db_helper = DB.DBHelper();
-                            db_helper.deleteAllPixels();
+                          onPressed: (){
+                            showDialog(context: context,
+                                builder: (BuildContext context) => DIALOG.FancyDialog(
+                                    title: "Remove all pixels?",
+                                    descreption: "Are you sure you want to delete all pixels at onces?",
+                                    ok: "Yes",
+                                    cancel: "No",
+                                    okColor: Colors.lightGreen,
+                                    cancelColor: Colors.redAccent,
+                                    okFun: (){var db_helper = DB.DBHelper();db_helper.deleteAllPixels();},
+                                )
+                            );
                           },
                           child:
                           new Text(
@@ -172,15 +181,24 @@ class _GalleryState extends State<Gallery> {
                     color: Colors.redAccent,
                     onPressed: () {
                       if (!plist[it].is_default) {
-                        //var db_helper_del = DBHelper();
-                        //db_helper_del.deletePixel(pixel);
+
+                        showDialog(context: context,
+                            builder: (BuildContext context) => DIALOG.FancyDialog(
+                              title: "Remove this pixel?",
+                              descreption: "Are you sure you want to delete this pixel?",
+                              ok: "Yes",
+                              cancel: "No",
+                              okColor: Colors.lightGreen,
+                              cancelColor: Colors.redAccent,
+                              okFun: (pixel){var db_helper = DB.DBHelper(); db_helper.deletePixel(pixel);},
+                            )
+                        );
                       }
                     }
                 ),
               ]
           )
       );
-
 
       row_list.add(px_row);
     }

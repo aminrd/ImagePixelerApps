@@ -20,7 +20,6 @@ class Artboard{
   }
 
   Artboard.Default(){
-    // IO.File default_file = IO.File("./assets/Artboard.jpg");
     var content_data_future = rootBundle.load("assets/Artboard.jpg");
     content_data_future.then((byte_data){
       this.target = IMG.decodeImage(byte_data.buffer.asUint8List());
@@ -107,8 +106,8 @@ class Artboard{
 
     // Set some pixels to red for now
 
-    for(int i=board.width - 10; i<board.width + 10; i++){
-      for(int j=board.height - 10; j<board.height + 10; j++){
+    for(int i=board.width ~/2 - 10; i<board.width~/2 + 10; i++){
+      for(int j=board.height~/2 - 10; j<board.height~/2 + 10; j++){
         board.setPixelRgba(i, j, 255, 0, 0);
       }
     }

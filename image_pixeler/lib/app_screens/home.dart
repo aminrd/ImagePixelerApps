@@ -34,9 +34,8 @@ class _HomepageState extends State<Homepage> {
   }
 
   Image getHeaderIndex({int idx = 0}) {
-    if ((header_pixels?.length ?? -1) >= idx) {
-      return Image.memory(
-          header_pixels[idx].get_core().getBytes());
+    if ((header_pixels?.length ?? -1) > idx) {
+      return header_pixels[idx].pixel2Widget();
     } else {
       String fname = "assets/Pixel$idx.jpg";
       return Image(image: AssetImage(fname));

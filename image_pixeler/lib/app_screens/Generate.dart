@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart' as IMG_SAVER;
 import 'package:image_pixeler/models/Utility.dart' as UTIL;
 import 'package:get_it/get_it.dart' as GET_IT;
+import 'package:fancy_dialog/fancy_dialog.dart' as DIALOG;
 import 'dart:typed_data';
 
 class Generate extends StatefulWidget {
@@ -92,19 +93,21 @@ class _GenerateState extends State<Generate> {
                 width: getArtboardSize(),
               ),
 
-              new RaisedButton(key:null,
+              new FloatingActionButton.extended(
+                  heroTag: "SaveImage",
+                  icon: Icon(Icons.save_alt, color: Colors.white,),
+                  key: null,
                   onPressed:() async{
                     // Saving the generated artboard to device gallery
                     final result = await IMG_SAVER.ImageGallerySaver.saveImage(getSavable());
-                    print("Saving the generated image");
+                        showDialog(context: context,
+                          builder: (BuildContext context) => DIALOG.FancyDialog(title: "Done", descreption: "The artboard was successfully saved to your device gallery")
+                    );
                   },
-                  color: const Color(0xFFe0e0e0),
-                  child:
-                  new Text(
+                  label: new Text(
                     "Save Image",
                     style: UTIL.button_text_styles,
-                  )
-              )
+                  ))
             ]
 
         ),

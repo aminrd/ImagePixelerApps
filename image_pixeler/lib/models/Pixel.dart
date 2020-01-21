@@ -80,19 +80,19 @@ class Pixel{
     int w_size = min(image.height, image.width);
 
     // Crop the original image into a square image
-    if(w_size < image.width){
-      image = IMG.copyCrop(image, (image.width - w_size) >> 1 , 0, w_size, w_size);
-    }else{
-      image = IMG.copyCrop(image, 0, (image.height - w_size) >> 1, w_size, w_size);
+    if(image.height != image.width){
+      if(w_size < image.width){
+        image = IMG.copyCrop(image, (image.width - w_size) >> 1 , 0, w_size, w_size);
+      }else{
+        image = IMG.copyCrop(image, 0, (image.height - w_size) >> 1, w_size, w_size);
+      }
     }
-
     // Storing two copies of image, a core and a base
     IMG.Image base = IMG.copyResize(image, width: 256, height: 256);
     IMG.Image core = IMG.copyResize(base, width: 16, height: 16);
     
     this._base64Image = base64Encode(IMG.encodeJpg(base));
     this._core = base64Encode(IMG.encodeJpg((core)));
-
   }
 
   IMG.Image resize(int h_new, int w_new){
@@ -122,18 +122,37 @@ class Pixel{
     return d_sum;
   }
 
+  int compare2Image(IMG.Image img1, IMG.Image img2){
+    if(img1.width != img2.width || img1.height != img2.height){
+      return 1<<30; // A large number
+    }
+    int d_sum = 0;
+    for(int i=0; i<img1.width; i++){
+      for(int j=0; j<img1.height; j++){
+        d_sum += this.compare_pixels(img1.getPixelSafe(i, j), img2.getPixelSafe(i, j));
+      }
+    }
+    return d_sum;
+  }
+
   int compare_score(Pixel other){
-    // TODO: Pyramid compare, create different levels of sizes, more weight on smaller sizes
+    // Pyramid comparison
     IMG.Image img1 = this.get_core();
     IMG.Image img2 = other.get_core();
 
     int d_sum = 0;
-    for(var i=0; i<16; i++){
-      for(var j=0; j<16; j++){
-        d_sum = d_sum + this.compare_pixels(img1.getPixelSafe(i, j), img2.getPixelSafe(i, j));
-      }
+    int w_sum = 0;
+
+    // Main size is 16x16
+    List<int> slist = [1,2,4,8];
+    for(int k=0; k<slist.length; k++){
+      int weight = slist[k] * slist[k];
+      int new_size = 16 ~/ slist[k];
+      w_sum += weight;
+      d_sum += weight * this.compare2Image(IMG.copyResize(img1, width: new_size, height: new_size), IMG.copyResize(img1, width: new_size, height: new_size));
     }
-    return d_sum;
+
+    return d_sum ~/ w_sum;
   }
 
   Image pixel2Widget(){
