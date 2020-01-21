@@ -30,6 +30,27 @@ class _GenerateState extends State<Generate> {
     Artboard ab_manager = locator.get<Artboard>();
     return ab_manager.getSavable();
   }
+
+  double getArtboardSize() {
+    double W = MediaQuery.of(context).size.width;
+    double H = MediaQuery.of(context).size.height;
+    if (W > H) {
+      return H / 3;
+    } else {
+      return W / 1.2;
+    }
+  }
+
+  double getTargetSize() {
+    double W = MediaQuery.of(context).size.width;
+    double H = MediaQuery.of(context).size.height;
+    if (W > H) {
+      return H / 6;
+    } else {
+      return W / 2.4;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -50,7 +71,11 @@ class _GenerateState extends State<Generate> {
                     fontFamily: "Roboto"),
               ),
 
-              getArtboadTarget(),
+              Container(
+                child:getArtboadTarget(),
+                width: getTargetSize(),
+                height: getTargetSize(),
+              ),
               new Text(
                 "Pixel Image",
                 style: new TextStyle(fontSize:26.0,
@@ -59,7 +84,11 @@ class _GenerateState extends State<Generate> {
                     fontFamily: "Roboto"),
               ),
 
-              getArtboadBoard(),
+              Container(
+                child: getArtboadBoard(),
+                height: getArtboardSize(),
+                width: getArtboardSize(),
+              ),
 
               new RaisedButton(key:null,
                 onPressed: (){
@@ -96,21 +125,4 @@ class _GenerateState extends State<Generate> {
     );
   }
 
-}
-
-
-Artboard generate_artboard(){
-  var db_helper = DB.DBHelper();
-  var future_artboard = db_helper.getArtboard();
-  var future_pixel_list = db_helper.getPixels();
-
-  future_artboard.then(
-      (artboard){
-        future_pixel_list.then( (plist){
-          artboard.build(plist);
-        }
-        );
-        return artboard;
-      }
-  );
 }

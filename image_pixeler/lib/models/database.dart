@@ -78,6 +78,7 @@ class DBHelper {
     return result;
   }
 
+  /*
   // Artboard related functions:
   Future<Artboard> getArtboard() async{
     var dbClient = await db;
@@ -94,4 +95,5 @@ class DBHelper {
       return await txn.insert("Artboard", {"board": ab_base_64});
     });
   }
+   */
 }

@@ -129,11 +129,8 @@ class _HomepageState extends State<Homepage> {
                         var image = await ImagePicker.pickImage(
                             source: ImageSource.gallery);
 
-                        var db_helper = DB.DBHelper();
-                        var img_bytes = image.readAsBytes();
-                        img_bytes.then((byte_list) {
-                          db_helper.saveArtboard(base64Encode(byte_list));
-                        });
+                        Artboard ab_manager = locator.get<Artboard>();
+                        ab_manager.importFile(image);
 
                         // Updating the header image
                         setState(() {
