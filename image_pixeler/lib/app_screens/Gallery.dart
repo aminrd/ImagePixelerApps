@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:ui';
 import 'package:image/image.dart' as IMG;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,7 +6,7 @@ import 'package:image_pixeler/models/database.dart' as DB;
 import 'package:image_pixeler/models/Pixel.dart';
 import 'package:image_pixeler/models/Utility.dart' as UTIL;
 import 'package:fancy_dialog/fancy_dialog.dart' as DIALOG;
-import 'dart:io' as IO;
+import 'package:fancy_dialog/FancyTheme.dart' as DIALOG_THEME;
 
 class Gallery extends StatefulWidget {
   Gallery({Key key}) : super(key: key);
@@ -46,16 +44,16 @@ class _GalleryState extends State<Gallery> {
 
                             IMG.Image img = IMG.decodeImage(
                                 image.readAsBytesSync());
-                            Pixel new_pixel = new Pixel.fromImage(img);
-                            var db_helper = DB.DBHelper();
-                            db_helper.savePixel(new_pixel);
+                            Pixel newPixel = new Pixel.fromImage(img);
+                            var dbHelper = DB.DBHelper();
+                            dbHelper.savePixel(newPixel);
                             // ------------------------------
                             setState(() {});
                           },
                           child:
                           new Text(
                             "Add new pixel",
-                            style: UTIL.button_text_styles_flat,
+                            style: UTIL.buttonTextStylesFlat,
                           )
                       ),
                       padding: const EdgeInsets.all(5.0),
@@ -75,14 +73,15 @@ class _GalleryState extends State<Gallery> {
                                     cancel: "No",
                                     okColor: Colors.lightGreen,
                                     cancelColor: Colors.redAccent,
-                                    okFun: (){var db_helper = DB.DBHelper();db_helper.deleteAllPixels();setState(() {});},
+                                    theme: DIALOG_THEME.FancyTheme.FANCY,
+                                    okFun: (){var dbHelper = DB.DBHelper();dbHelper.deleteAllPixels();setState(() {});},
                                 )
                             );
                           },
                           child:
                           new Text(
                             "Remove all",
-                            style: UTIL.button_text_styles_flat,
+                            style: UTIL.buttonTextStylesFlat,
                           )
                       ),
                       padding: const EdgeInsets.all(5.0),
@@ -125,31 +124,29 @@ class _GalleryState extends State<Gallery> {
 
   List<Pixel> getPixelList() {
     //return loadDefaultPixels();
-    List<Widget> row_list = new List<Widget>();
-    var db_helper = DB.DBHelper();
-    Future<List<Pixel>> plist_future = db_helper.getPixels();
-    List<Pixel> return_value = new List<Pixel>();
+    var dbHelper = DB.DBHelper();
+    Future<List<Pixel>> plistFuture = dbHelper.getPixels();
+    List<Pixel> returnValue = new List<Pixel>();
 
-    plist_future.then((plist) {
+    plistFuture.then((plist) {
       if ((plist?.length ?? -1) <= 0) {
-        return_value = loadDefaultPixels();
+        returnValue = loadDefaultPixels();
       } else {
-        return_value = plist;
+        returnValue = plist;
       }
     });
 
-    return return_value;
+    return returnValue;
 
   }
 
 
   List<Widget> getGalleryRows(double W) {
-    List<Widget> row_list = new List<Widget>();
-    var db_helper = DB.DBHelper();
+    List<Widget> rowList = new List<Widget>();
     List<Pixel> plist = getPixelList();
 
     for (int it = 0; it < plist.length; it++) {
-      Widget px_row = new Card(
+      Widget pxRow = new Card(
           elevation: 5,
           child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,7 +188,8 @@ class _GalleryState extends State<Gallery> {
                               cancel: "No",
                               okColor: Colors.lightGreen,
                               cancelColor: Colors.redAccent,
-                              okFun: (pixel){var db_helper = DB.DBHelper(); db_helper.deletePixel(pixel);setState(() {});},
+                              theme: DIALOG_THEME.FancyTheme.FANCY,
+                              okFun: (pixel){var dbHelper = DB.DBHelper(); dbHelper.deletePixel(pixel);setState(() {});},
                             )
                         );
                       }
@@ -201,10 +199,10 @@ class _GalleryState extends State<Gallery> {
           )
       );
 
-      row_list.add(px_row);
+      rowList.add(pxRow);
     }
 
-    return row_list;
+    return rowList;
   }
 
 

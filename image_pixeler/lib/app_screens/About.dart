@@ -1,11 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'dart:io' as IO;
-import 'package:image_pixeler/models/database.dart' as DB;
-import 'package:image_pixeler/models/Artboard.dart';
-import 'package:image_pixeler/models/Pixel.dart';
 import 'package:url_launcher/url_launcher.dart' as URL;
-import 'package:image_pixeler/models/Utility.dart' as UTIL;
 
 class About extends StatefulWidget {
   About({Key key}) : super(key: key);

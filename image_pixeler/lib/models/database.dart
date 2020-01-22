@@ -1,14 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io'; // as io
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'Artboard.dart';
-
-import 'package:image/image.dart' as IMG;
 
 // Importing this app models
 import 'package:image_pixeler/models/Pixel.dart';
@@ -47,14 +41,13 @@ class DBHelper {
     List<Map> list = await dbClient.rawQuery('SELECT * FROM Pixels');
     List<Pixel> pixels = new List();
 
-    int pick_number = need;
-    if(list.length < pick_number){
-      pick_number = list.length;
+    int pickNumber = need;
+    if(list.length < pickNumber){
+      pickNumber = list.length;
     }
-    for (int i = 0; i < pick_number; i++) {
+    for (int i = 0; i < pickNumber; i++) {
       pixels.add(new Pixel(list[i]["id"], list[i]["width"], list[i]["height"], list[i]["baseImage"], list[i]["coreImage"]));
     }
-    int plength = pixels.length;
     return pixels;
   }
 
@@ -65,7 +58,7 @@ class DBHelper {
     return result;
   }
 
-  Future<int> deletePixel(Pixel pixel) async {
+  void deletePixel(Pixel pixel) async {
     var dbClient = await db;
     int id = pixel.getId();
     await dbClient.delete("Pixels", where: "id = ?", whereArgs: [id]);

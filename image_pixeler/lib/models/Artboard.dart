@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,9 +19,9 @@ class Artboard{
   }
 
   Artboard.Default(){
-    var content_data_future = rootBundle.load("assets/Artboard.jpg");
-    content_data_future.then((byte_data){
-      this.target = IMG.decodeImage(byte_data.buffer.asUint8List());
+    var contentDataFuture = rootBundle.load("assets/Artboard.jpg");
+    contentDataFuture.then((byteData){
+      this.target = IMG.decodeImage(byteData.buffer.asUint8List());
       this.board = this.getTarget();
     });
   }
@@ -34,8 +33,8 @@ class Artboard{
   }
 
   void importFile(IO.File file){
-    final byte_stream = file.readAsBytesSync();
-    this.target = IMG.decodeImage(byte_stream);
+    final byteStream = file.readAsBytesSync();
+    this.target = IMG.decodeImage(byteStream);
     this.board = this.getTarget();
   }
 
@@ -89,14 +88,15 @@ class Artboard{
         int minIdx = 0;
         int minDist = frame.compare_score(pList[0]);
         for(var k=1; k<pList.length; k++){
-          int new_diff = frame.compare_score(pList[k]);
-          if(new_diff < minDist){
-            minDist = new_diff;
+          int newDiff = frame.compare_score(pList[k]);
+          if(newDiff < minDist){
+            minDist = newDiff;
             minIdx = k;
           }
         }
 
-        fillBoard(frame.get_core(), i, j);
+        IMG.Image newFrame = pList[minIdx].getBase(w:step, h:step);
+        fillBoard(newFrame, i, j);
       }
     }
     return board;

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:io' as IO;
-import 'package:image_pixeler/models/database.dart' as DB;
 import 'package:image_pixeler/models/Artboard.dart';
-import 'package:image_pixeler/models/Pixel.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart' as IMG_SAVER;
 import 'package:image_pixeler/models/Utility.dart' as UTIL;
 import 'package:get_it/get_it.dart' as GET_IT;
 import 'package:fancy_dialog/fancy_dialog.dart' as DIALOG;
+import 'package:fancy_dialog/FancyTheme.dart' as DIALOG_THEME;
 import 'dart:typed_data';
 
 class Generate extends StatefulWidget {
@@ -20,16 +17,16 @@ class _GenerateState extends State<Generate> {
   GET_IT.GetIt locator = GET_IT.GetIt.instance;
 
   Image getArtboadTarget(){
-    Artboard ab_manager = locator.get<Artboard>();
-    return ab_manager.target2Widget();
+    Artboard abManager = locator.get<Artboard>();
+    return abManager.target2Widget();
   }
   Image getArtboadBoard(){
-    Artboard ab_manager = locator.get<Artboard>();
-    return ab_manager.board2Widget();
+    Artboard abManager = locator.get<Artboard>();
+    return abManager.board2Widget();
   }
   Uint8List getSavable(){
-    Artboard ab_manager = locator.get<Artboard>();
-    return ab_manager.getSavable();
+    Artboard abManager = locator.get<Artboard>();
+    return abManager.getSavable();
   }
 
   double getArtboardSize() {
@@ -111,14 +108,18 @@ class _GenerateState extends State<Generate> {
                   key: null,
                   onPressed:() async{
                     // Saving the generated artboard to device gallery
-                    final result = await IMG_SAVER.ImageGallerySaver.saveImage(getSavable());
+                    await IMG_SAVER.ImageGallerySaver.saveImage(getSavable());
                         showDialog(context: context,
-                          builder: (BuildContext context) => DIALOG.FancyDialog(title: "Done", descreption: "The artboard was successfully saved to your device gallery")
+                          builder: (BuildContext context) => DIALOG.FancyDialog(
+                              title: "Done",
+                              descreption: "The artboard was successfully saved to your device gallery",
+                              theme: DIALOG_THEME.FancyTheme.FANCY,
+                          )
                     );
                   },
                   label: new Text(
                     "Save Image",
-                    style: UTIL.button_text_styles,
+                    style: UTIL.buttonTextStyles,
                   ))
             ]
 

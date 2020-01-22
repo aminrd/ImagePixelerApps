@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'dart:io' as IO;
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_pixeler/models/Artboard.dart';
 import 'package:image_pixeler/models/Pixel.dart';
@@ -43,14 +40,14 @@ class _HomepageState extends State<Homepage> {
   }
 
   List<Widget> getSampleRow() {
-    List<Widget> my_row = new List<Widget>();
+    List<Widget> myRow = new List<Widget>();
 
     double W = MediaQuery.of(context).size.width;
     double H = MediaQuery.of(context).size.height;
 
     if (H > W) {
       for (int i = 0; i < 2; i++) {
-        my_row.add(Container(
+        myRow.add(Container(
           child: getHeaderIndex(idx: i),
           padding: const EdgeInsets.all(4.0),
           height: W/4,
@@ -59,7 +56,7 @@ class _HomepageState extends State<Homepage> {
       }
     } else {
       for (int i = 0; i < 8; i++) {
-        my_row.add(Container(
+        myRow.add(Container(
           child: getHeaderIndex(idx: i),
           padding: const EdgeInsets.all(4.0),
           width: W / 10,
@@ -69,7 +66,7 @@ class _HomepageState extends State<Homepage> {
     }
 
     // Static add
-    my_row.add(Icon(
+    myRow.add(Icon(
       Icons.view_week,
       color: Colors.black38,
       size: 40.0,
@@ -77,7 +74,7 @@ class _HomepageState extends State<Homepage> {
     ));
 
     // Static add
-    my_row.add(Center(
+    myRow.add(Center(
       child: Ink(
         decoration: const ShapeDecoration(
           color: Colors.blueAccent,
@@ -94,7 +91,7 @@ class _HomepageState extends State<Homepage> {
       ),
     ));
 
-    return my_row;
+    return myRow;
   }
 
   @override
@@ -127,22 +124,22 @@ class _HomepageState extends State<Homepage> {
                         var image = await ImagePicker.pickImage(
                             source: ImageSource.gallery);
 
-                        Artboard ab_manager = locator.get<Artboard>();
-                        ab_manager.importFile(image);
+                        Artboard abManager = locator.get<Artboard>();
+                        abManager.importFile(image);
 
                         // Updating the header image
                         setState(() {
                           _board_image_img =
                               Image.memory(image.readAsBytesSync());
 
-                          Artboard ab_manager = locator.get<Artboard>();
-                          ab_manager.importFile(image);
+                          Artboard abManager = locator.get<Artboard>();
+                          abManager.importFile(image);
                         });
                         // ------------------------------
                       },
                       label: new Text(
                         "Choose artboard image",
-                        style: UTIL.button_text_styles,
+                        style: UTIL.buttonTextStyles,
                       )),
                   width: getArtboardSize(),
                 ),
@@ -176,13 +173,13 @@ class _HomepageState extends State<Homepage> {
                       icon: Icon(Icons.star_half, color: Colors.white,),
                       key: null,
                       onPressed: () {
-                        Artboard ab_manager = locator.get<Artboard>();
-                        ab_manager.build( getPixelList() );
+                        Artboard abManager = locator.get<Artboard>();
+                        abManager.build( getPixelList() );
                         Navigator.pushNamed(context, "/generate");
                       },
                       label: new Text(
                         "Generate",
-                        style: UTIL.button_text_styles,
+                        style: UTIL.buttonTextStyles,
                       )),
                   padding: const EdgeInsets.all(10.0),
                 ),
@@ -194,7 +191,7 @@ class _HomepageState extends State<Homepage> {
                     },
                     child: new Text(
                       "About and License Agreement",
-                      style: UTIL.button_text_styles_flat,
+                      style: UTIL.buttonTextStylesFlat,
                     ))
               ]),
           padding: const EdgeInsets.all(5.0),
@@ -204,29 +201,28 @@ class _HomepageState extends State<Homepage> {
 }
 
 List<Pixel> getHeaderPixels() {
-  var db_helper = DB.DBHelper();
-  List<Pixel> ret_val = new List<Pixel>();
-  var pixel_list = db_helper.getPixels(need: 2);
-  pixel_list.then((plist) {
-    ret_val =  plist;
+  var dbHelper = DB.DBHelper();
+  List<Pixel> retVal = new List<Pixel>();
+  var pixelList = dbHelper.getPixels(need: 2);
+  pixelList.then((plist) {
+    retVal =  plist;
   });
-  return ret_val;
+  return retVal;
 }
 
 List<Pixel> getPixelList(){
-  List<Widget> row_list = new List<Widget>();
-  var db_helper = DB.DBHelper();
-  Future<List<Pixel>> plist_future = db_helper.getPixels();
-  List<Pixel> ret_val = new List<Pixel>();
+  var dbHelper = DB.DBHelper();
+  Future<List<Pixel>> plistFuture = dbHelper.getPixels();
+  List<Pixel> retVal = new List<Pixel>();
 
-  plist_future.then( (plist){
+  plistFuture.then( (plist){
    if( (plist?.length ?? -1) <= 0 ){
-      ret_val = loadDefaultPixels();
+      retVal = loadDefaultPixels();
     }else{
-      ret_val = plist;
+      retVal = plist;
     }
   });
-  return ret_val;
+  return retVal;
 }
 
 List<Pixel> loadDefaultPixels(){

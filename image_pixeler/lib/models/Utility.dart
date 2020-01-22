@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-TextStyle button_text_styles = new TextStyle(
+TextStyle buttonTextStyles = new TextStyle(
     fontSize: 16.0,
     color: Colors.white70,
     fontWeight: FontWeight.w600,
     fontFamily: "Roboto"
 );
 
-TextStyle button_text_styles_flat = new TextStyle(
+TextStyle buttonTextStylesFlat = new TextStyle(
     fontSize: 16.0,
     color: Colors.black54,
     fontWeight: FontWeight.w600,
