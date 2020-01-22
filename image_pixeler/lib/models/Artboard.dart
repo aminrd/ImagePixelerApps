@@ -86,20 +86,18 @@ class Artboard{
   IMG.Image build(List<Pixel> pList){
 
     if(pList.length <= 0){
-      print("---- Plist is empty");
       return this.board;
     }
 
     int step = 64;
     for(int i=0; i+step <= board.width; i = i+step){
-      print("-- $i");
       for(int j=0; j+step <= board.height; j = j+step){
         Pixel frame = Pixel.fromImage(IMG.copyCrop(board, i, j, step, step));
 
         int minIdx = 0;
-        int minDist = frame.compare_score(pList[0]);
+        double minDist = frame.compare_score(pList[0]);
         for(var k=1; k<pList.length; k++){
-          int newDiff = frame.compare_score(pList[k]);
+          double newDiff = frame.compare_score(pList[k]);
           if(newDiff < minDist){
             minDist = newDiff;
             minIdx = k;

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as IMG;
 import 'dart:io' as IO;
+import 'dart:math' as MATH;
 
 
 List<int> getRandomImage({size:256}){
@@ -120,22 +121,22 @@ class Pixel{
     }
   }
 
-  int compare_pixels(int p1, int p2){
+  double compare_pixels(int p1, int p2){
     int dSum = 0;
     for(var i=0; i<3; i++){
       int cdiff = (p1 % (1<<8)) - (p2 % (1<<8));
-      dSum += cdiff.abs();
+      dSum += cdiff * cdiff;
       p1 = p1 >> 8;
       p2 = p2 >> 8;
     }
-    return dSum;
+    return MATH.sqrt(dSum);
   }
 
-  int compare2Image(IMG.Image img1, IMG.Image img2){
+  double compare2Image(IMG.Image img1, IMG.Image img2){
     if(img1.width != img2.width || img1.height != img2.height){
-      return 1<<30; // A large number
+      return (1<<30).toDouble(); // A large number
     }
-    int dSum = 0;
+    double dSum = 0.0;
     for(int i=0; i<img1.width; i++){
       for(int j=0; j<img1.height; j++){
         dSum += this.compare_pixels(img1.getPixelSafe(i, j), img2.getPixelSafe(i, j));
@@ -144,12 +145,12 @@ class Pixel{
     return dSum;
   }
 
-  int compare_score(Pixel other){
+  double compare_score(Pixel other){
     // Pyramid comparison
     IMG.Image img1 = this.get_core();
     IMG.Image img2 = other.get_core();
 
-    int dSum = 0;
+    double dSum = 0;
     int wSum = 0;
 
     // Main size is 16x16
@@ -161,7 +162,7 @@ class Pixel{
       dSum += weight * this.compare2Image(IMG.copyResize(img1, width: newSize, height: newSize), IMG.copyResize(img2, width: newSize, height: newSize));
     }
 
-    return dSum ~/ wSum;
+    return dSum / wSum;
   }
 
   Image pixel2Widget(){
