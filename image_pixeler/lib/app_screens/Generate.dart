@@ -87,7 +87,7 @@ class _GenerateState extends State<Generate> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   new Text(
-                  "Pixel Image",
+                  "Artboard Image",
                   style: new TextStyle(fontSize:26.0,
                       color: const Color(0xFF000000),
                       fontWeight: FontWeight.w400,
@@ -112,6 +112,8 @@ class _GenerateState extends State<Generate> {
                         showDialog(context: context,
                           builder: (BuildContext context) => DIALOG.FancyDialog(
                               title: "Done",
+                              okColor: Colors.blueAccent,
+                              cancelColor: const Color(0xFFffc107),
                               descreption: "The artboard was successfully saved to your device gallery",
                               theme: DIALOG_THEME.FancyTheme.FANCY,
                           )

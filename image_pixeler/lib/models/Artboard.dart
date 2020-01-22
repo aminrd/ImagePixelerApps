@@ -38,6 +38,11 @@ class Artboard{
     this.board = this.getTarget();
   }
 
+  void importByteStream(Uint8List byteStream){
+    this.target = IMG.decodeImage(byteStream);
+    this.board = this.getTarget();
+  }
+
   IMG.Image getTarget({int w: 2048, int h: 2048}) {
     IMG.Image tg = this.target;
     return IMG.copyResize(tg, width: w, height: h);
@@ -80,9 +85,15 @@ class Artboard{
 
   IMG.Image build(List<Pixel> pList){
 
-    int step = 128;
-    for(var i=0; i+step < board.width; i = i+step){
-      for(var j=0; j+step < board.height; j = j+step){
+    if(pList.length <= 0){
+      print("---- Plist is empty");
+      return this.board;
+    }
+
+    int step = 64;
+    for(int i=0; i+step <= board.width; i = i+step){
+      print("-- $i");
+      for(int j=0; j+step <= board.height; j = j+step){
         Pixel frame = Pixel.fromImage(IMG.copyCrop(board, i, j, step, step));
 
         int minIdx = 0;

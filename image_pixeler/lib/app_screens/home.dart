@@ -17,7 +17,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   Image _board_image_img = Image(image: AssetImage('assets/Artboard.jpg'));
-  List<Pixel> header_pixels = getHeaderPixels();
+  List<Pixel> header_pixels = List<Pixel>();
   GET_IT.GetIt locator = GET_IT.GetIt.instance;
 
   double getArtboardSize() {
@@ -95,6 +95,17 @@ class _HomepageState extends State<Homepage> {
   }
 
   @override
+  void initState(){
+    var headerPixelFuture = getHeaderPixels();
+    headerPixelFuture.then((plist){
+      setState(() {
+        this.header_pixels = plist;
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
@@ -129,8 +140,9 @@ class _HomepageState extends State<Homepage> {
 
                         // Updating the header image
                         setState(() {
+                          final byteStream = image.readAsBytesSync();
                           _board_image_img =
-                              Image.memory(image.readAsBytesSync());
+                              Image.memory(byteStream);
 
                           Artboard abManager = locator.get<Artboard>();
                           abManager.importFile(image);
@@ -172,9 +184,10 @@ class _HomepageState extends State<Homepage> {
                       heroTag: "Generating Image",
                       icon: Icon(Icons.star_half, color: Colors.white,),
                       key: null,
-                      onPressed: () {
+                      onPressed: () async {
                         Artboard abManager = locator.get<Artboard>();
-                        abManager.build( getPixelList() );
+                        List<Pixel> plist = await getPixelList();
+                        abManager.build( plist );
                         Navigator.pushNamed(context, "/generate");
                       },
                       label: new Text(
@@ -200,29 +213,21 @@ class _HomepageState extends State<Homepage> {
   }
 }
 
-List<Pixel> getHeaderPixels() {
+Future<List<Pixel>> getHeaderPixels() async{
   var dbHelper = DB.DBHelper();
-  List<Pixel> retVal = new List<Pixel>();
-  var pixelList = dbHelper.getPixels(need: 2);
-  pixelList.then((plist) {
-    retVal =  plist;
-  });
-  return retVal;
+  List<Pixel> plist = await dbHelper.getPixels(need: 2);
+  return plist;
 }
 
-List<Pixel> getPixelList(){
+Future< List<Pixel> >getPixelList() async{
   var dbHelper = DB.DBHelper();
-  Future<List<Pixel>> plistFuture = dbHelper.getPixels();
-  List<Pixel> retVal = new List<Pixel>();
+  List<Pixel> plist = await dbHelper.getPixels();
 
-  plistFuture.then( (plist){
    if( (plist?.length ?? -1) <= 0 ){
-      retVal = loadDefaultPixels();
-    }else{
-      retVal = plist;
+      plist = loadDefaultPixels();
     }
-  });
-  return retVal;
+
+  return plist;
 }
 
 List<Pixel> loadDefaultPixels(){

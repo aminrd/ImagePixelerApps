@@ -15,6 +15,19 @@ class Gallery extends StatefulWidget {
 }
 
 class _GalleryState extends State<Gallery> {
+  List<Pixel> pList = new List<Pixel>();
+
+  @override
+  void initState(){
+    var getPlistAsync = getPixelList();
+    getPlistAsync.then((plist){
+     setState(() {
+       this.pList = plist;
+     });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -48,7 +61,8 @@ class _GalleryState extends State<Gallery> {
                             var dbHelper = DB.DBHelper();
                             dbHelper.savePixel(newPixel);
                             // ------------------------------
-                            setState(() {});
+                            var plist = await getPixelList();
+                            setState(() { this.pList = plist; });
                           },
                           child:
                           new Text(
@@ -74,7 +88,8 @@ class _GalleryState extends State<Gallery> {
                                     okColor: Colors.lightGreen,
                                     cancelColor: Colors.redAccent,
                                     theme: DIALOG_THEME.FancyTheme.FANCY,
-                                    okFun: (){var dbHelper = DB.DBHelper();dbHelper.deleteAllPixels();setState(() {});},
+                                    okFun: ()async {var dbHelper = DB.DBHelper();await dbHelper.deleteAllPixels(); setState(() {this.pList.removeRange(0, this.pList.length - 1);});},
+                                    cancelFun: (){},
                                 )
                             );
                           },
@@ -95,10 +110,7 @@ class _GalleryState extends State<Gallery> {
 
               ),
 
-              new Expanded(child: ListView(children: getGalleryRows(MediaQuery
-                  .of(context)
-                  .size
-                  .width), scrollDirection: Axis.vertical, shrinkWrap: true))
+              new Expanded(child: ListView(children: getGalleryRows(MediaQuery.of(context).size.width), scrollDirection: Axis.vertical, shrinkWrap: true))
 
             ]
 
@@ -122,28 +134,22 @@ class _GalleryState extends State<Gallery> {
   }
 
 
-  List<Pixel> getPixelList() {
+  Future <List<Pixel>> getPixelList() async{
     //return loadDefaultPixels();
     var dbHelper = DB.DBHelper();
-    Future<List<Pixel>> plistFuture = dbHelper.getPixels();
-    List<Pixel> returnValue = new List<Pixel>();
+    var plist = await dbHelper.getPixels();
 
-    plistFuture.then((plist) {
       if ((plist?.length ?? -1) <= 0) {
-        returnValue = loadDefaultPixels();
-      } else {
-        returnValue = plist;
+        plist = loadDefaultPixels();
       }
-    });
 
-    return returnValue;
-
+    return plist;
   }
 
 
-  List<Widget> getGalleryRows(double W) {
+ List<Widget>  getGalleryRows(double W){
     List<Widget> rowList = new List<Widget>();
-    List<Pixel> plist = getPixelList();
+    List<Pixel> plist = pList;
 
     for (int it = 0; it < plist.length; it++) {
       Widget pxRow = new Card(
@@ -189,7 +195,8 @@ class _GalleryState extends State<Gallery> {
                               okColor: Colors.lightGreen,
                               cancelColor: Colors.redAccent,
                               theme: DIALOG_THEME.FancyTheme.FANCY,
-                              okFun: (pixel){var dbHelper = DB.DBHelper(); dbHelper.deletePixel(pixel);setState(() {});},
+                              okFun: (pixel) async{ var db_helper = DB.DBHelper(); await db_helper.deletePixel(pixel); var plist = await getPixelList(); setState((){ this.pList = plist; });},
+                              cancelFun: (){},
                             )
                         );
                       }
@@ -201,7 +208,6 @@ class _GalleryState extends State<Gallery> {
 
       rowList.add(pxRow);
     }
-
     return rowList;
   }
 

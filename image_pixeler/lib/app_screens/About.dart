@@ -18,7 +18,7 @@ class _AboutState extends State<About> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('ImagePixelerApp'),
+        title: new Text('About and License'),
       ),
       body: new Container(
         child: new Column(
