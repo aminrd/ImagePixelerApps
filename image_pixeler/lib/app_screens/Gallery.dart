@@ -88,7 +88,14 @@ class _GalleryState extends State<Gallery> {
                                     okColor: Colors.lightGreen,
                                     cancelColor: Colors.redAccent,
                                     theme: DIALOG_THEME.FancyTheme.FANCY,
-                                    okFun: ()async {var dbHelper = DB.DBHelper();await dbHelper.deleteAllPixels(); setState(() {this.pList.removeRange(0, this.pList.length - 1);});},
+                                    okFun: ()async {
+                                      var dbHelper = DB.DBHelper();
+                                      await dbHelper.deleteAllPixels();
+                                      var plist = await getPixelList();
+                                      setState(() {
+                                        this.pList = plist;
+                                      });
+                                      },
                                     cancelFun: (){},
                                 )
                             );
@@ -146,6 +153,33 @@ class _GalleryState extends State<Gallery> {
     return plist;
   }
 
+  void deleteSinglePixel(bool is_default, int pixleId) async{
+    if (!is_default) {
+
+      bool okToDelete = false;
+
+      showDialog(context: context,
+          builder: (BuildContext context) => DIALOG.FancyDialog(
+            title: "Remove this pixel?",
+            descreption: "Are you sure you want to delete this pixel?",
+            ok: "Yes",
+            cancel: "No",
+            okColor: Colors.lightGreen,
+            cancelColor: Colors.redAccent,
+            theme: DIALOG_THEME.FancyTheme.FANCY,
+            okFun: (){ okToDelete = true;},
+            cancelFun: (){ okToDelete = false;},
+          )
+      );
+
+      if(okToDelete){
+        var db_helper = DB.DBHelper();
+        await db_helper.deletePixelById( pixleId );
+        var plist = await getPixelList();
+        setState((){ this.pList = plist; });
+      }
+    }
+  }
 
  List<Widget>  getGalleryRows(double W){
     List<Widget> rowList = new List<Widget>();
@@ -183,24 +217,7 @@ class _GalleryState extends State<Gallery> {
                 new IconButton(icon: Icon(Icons.delete),
                     iconSize: 36,
                     color: Colors.redAccent,
-                    onPressed: () {
-                      if (!plist[it].is_default) {
-
-                        showDialog(context: context,
-                            builder: (BuildContext context) => DIALOG.FancyDialog(
-                              title: "Remove this pixel?",
-                              descreption: "Are you sure you want to delete this pixel?",
-                              ok: "Yes",
-                              cancel: "No",
-                              okColor: Colors.lightGreen,
-                              cancelColor: Colors.redAccent,
-                              theme: DIALOG_THEME.FancyTheme.FANCY,
-                              okFun: (pixel) async{ var db_helper = DB.DBHelper(); await db_helper.deletePixel(pixel); var plist = await getPixelList(); setState((){ this.pList = plist; });},
-                              cancelFun: (){},
-                            )
-                        );
-                      }
-                    }
+                    onPressed: () => {this.deleteSinglePixel(plist[it].is_default, plist[it].getId())}
                 ),
               ]
           )

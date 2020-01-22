@@ -58,6 +58,11 @@ class DBHelper {
     return result;
   }
 
+  void deletePixelById(int id) async {
+    var dbClient = await db;
+    await dbClient.delete("Pixels", where: "id = ?", whereArgs: [id]);
+  }
+
   void deletePixel(Pixel pixel) async {
     var dbClient = await db;
     int id = pixel.getId();
