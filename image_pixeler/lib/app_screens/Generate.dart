@@ -66,31 +66,43 @@ class _GenerateState extends State<Generate> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              new Text(
-                "Original Image",
-                style: new TextStyle(fontSize:24.0,
-                    color: const Color(0xFF000000),
-                    fontWeight: FontWeight.w400,
-                    fontFamily: "Roboto"),
+
+              Row(
+                children: <Widget>[
+                  new Text(
+                    "Original Image",
+                    style: new TextStyle(fontSize:24.0,
+                        color: const Color(0xFF000000),
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Roboto"),
+                  )
+                ],
+                crossAxisAlignment: CrossAxisAlignment.center,
               ),
 
               Container(
                 child:getArtboadTarget(),
                 width: getTargetSize(),
                 height: getTargetSize(),
+                padding: const EdgeInsets.all(5.0),
               ),
-              new Text(
-                "Pixel Image",
-                style: new TextStyle(fontSize:26.0,
-                    color: const Color(0xFF000000),
-                    fontWeight: FontWeight.w400,
-                    fontFamily: "Roboto"),
+              new Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  new Text(
+                  "Pixel Image",
+                  style: new TextStyle(fontSize:26.0,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Roboto"),
+                )],
               ),
 
               Container(
                 child: getArtboadBoard(),
                 height: getArtboardSize(),
                 width: getArtboardSize(),
+                padding: const EdgeInsets.all(5.0),
               ),
 
               new FloatingActionButton.extended(

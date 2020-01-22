@@ -81,14 +81,13 @@ class Artboard{
 
   IMG.Image build(List<Pixel> pList){
 
-    /*
     int step = 128;
     for(var i=0; i+step < board.width; i = i+step){
       for(var j=0; j+step < board.height; j = j+step){
-        Pixel frame = Pixel.fromImage(copyCrop(board, i, j, step, step));
+        Pixel frame = Pixel.fromImage(IMG.copyCrop(board, i, j, step, step));
 
         int minIdx = 0;
-        int minDist = frame.compare_score(pList[k]);
+        int minDist = frame.compare_score(pList[0]);
         for(var k=1; k<pList.length; k++){
           int new_diff = frame.compare_score(pList[k]);
           if(new_diff < minDist){
@@ -102,15 +101,5 @@ class Artboard{
     }
     return board;
 
-    */
-
-    // Set some pixels to red for now
-
-    for(int i=board.width ~/2 - 10; i<board.width~/2 + 10; i++){
-      for(int j=board.height~/2 - 10; j<board.height~/2 + 10; j++){
-        board.setPixelRgba(i, j, 255, 0, 0);
-      }
-    }
-    return board;
   }
 }

@@ -43,13 +43,14 @@ class _GalleryState extends State<Gallery> {
                             // Adding new image to database:
                             var image = await ImagePicker.pickImage(
                                 source: ImageSource.gallery);
-                            //Image uiImage = new Image.file(image);
+
                             IMG.Image img = IMG.decodeImage(
                                 image.readAsBytesSync());
                             Pixel new_pixel = new Pixel.fromImage(img);
                             var db_helper = DB.DBHelper();
                             db_helper.savePixel(new_pixel);
                             // ------------------------------
+                            setState(() {});
                           },
                           child:
                           new Text(
@@ -74,7 +75,7 @@ class _GalleryState extends State<Gallery> {
                                     cancel: "No",
                                     okColor: Colors.lightGreen,
                                     cancelColor: Colors.redAccent,
-                                    okFun: (){var db_helper = DB.DBHelper();db_helper.deleteAllPixels();},
+                                    okFun: (){var db_helper = DB.DBHelper();db_helper.deleteAllPixels();setState(() {});},
                                 )
                             );
                           },
@@ -190,7 +191,7 @@ class _GalleryState extends State<Gallery> {
                               cancel: "No",
                               okColor: Colors.lightGreen,
                               cancelColor: Colors.redAccent,
-                              okFun: (pixel){var db_helper = DB.DBHelper(); db_helper.deletePixel(pixel);},
+                              okFun: (pixel){var db_helper = DB.DBHelper(); db_helper.deletePixel(pixel);setState(() {});},
                             )
                         );
                       }
